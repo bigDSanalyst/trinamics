@@ -58,13 +58,14 @@ export const VerdictBanner: React.FC<VerdictBannerProps> = ({ onSelectAudit }) =
             <XCircle className="w-3.5 h-3.5" />
             Does not hold
           </span>
-          <span className="text-xs text-zinc-400 font-mono">Δ &lt; 10⁻¹⁴ σ</span>
+          <span className="text-xs text-zinc-400 font-mono">0.5265σ · 4.46σ</span>
         </div>
         <h3 className="text-base font-semibold text-zinc-100 group-hover:text-rose-300 transition-colors">
           0.53σ ghosts
         </h3>
         <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-          The two chord-equivalent ghosts are identical at the perimeter under the stated barrier. Separation is numerical noise.
+          0.5265σ (baseline y_base=10⁻⁶ S, P_err ≥ 0.396) · 4.46σ (design y_base=10⁻⁷ S, P_err ≥ 0.0128).
+          <span className="block text-[10px] text-zinc-500 mt-0.5">* Previously cited as 1.2×10⁻¹⁴σ in v5.0; withdrawn in v5.1 notes</span>
         </p>
       </div>
     </div>

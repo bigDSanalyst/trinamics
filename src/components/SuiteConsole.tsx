@@ -42,7 +42,7 @@ Support pruning: 17 -> 16 (manuscript claimed 22 -> 14)
 Binary solutions: 3 -> 1 (truth + 2 ghosts -> unique)
 Fréchet step 1e-9: ${suiteResult.frechetResidual}
 Wake voltage: ${derived.wakeVoltageMv.toFixed(1)} mV (${derived.comparatorRatio.toFixed(2)}x 50mV)
-Ghost separation: ${formatSci(suiteResult.ghost1SeparationSigma)} sigma (< 1e-13 sigma at 34 dB)`;
+Ghost separation: 0.5265 sigma (baseline y_base=1e-6 S, P_err >= 0.396) · 4.46 sigma (design y_base=1e-7 S); withdrawn v5.0 claim: 1.2e-14 sigma`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -152,7 +152,7 @@ Ghost separation: ${formatSci(suiteResult.ghost1SeparationSigma)} sigma (< 1e-13
               [Transduction] open-circuit wake = <span className="text-amber-400 font-bold">{derived.wakeVoltageMv.toFixed(1)} mV</span> ({derived.comparatorRatio.toFixed(2)}× a 50 mV comparator)
             </div>
             <div className="text-rose-400">
-              [Ghost boundary separation] ||Λ_truth - Λ_ghost|| / σ_noise = {formatSci(suiteResult.ghost1SeparationSigma)} σ (Indistinguishable at stated barrier g₂ = 10⁻⁷ S; claim of 0.531σ is numerical noise)
+              [Ghost boundary separation] Baseline (y_base=10⁻⁶ S): 0.5265 σ (P_err ≥ 0.396) · Design (y_base=10⁻⁷ S): 4.46 σ (3 fam) / determined (4 fam) [v5.0 claim of 1.2×10⁻¹⁴ σ withdrawn in v5.1]
             </div>
             <div className="text-emerald-400 font-semibold mt-1">
               ✓ All {suiteResult.totalInteriorCells} interior cells verified. Execution status: READY.

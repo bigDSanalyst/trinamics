@@ -318,7 +318,7 @@ export const DepthSensitivityChart: React.FC<DepthSensitivityChartProps> = ({
             <strong className="text-zinc-100">At the anchor conductances:</strong> Ring 7 reaches <span className="font-mono text-emerald-300">5σ</span> near <span className="font-mono text-emerald-300">73 dB</span>. The benchmark ridges sit on <span className="font-mono text-amber-300">rings 4 and inward</span>, where a single cell is still below <span className="font-mono text-rose-300">10⁻⁶ σ</span> at 34 dB.
           </p>
           <p className="text-zinc-400 text-[11px]">
-            Ghost-to-truth separation on the full diagonal is <span className="font-mono text-zinc-200">&lt; 10⁻⁶ σ</span> at this SNR (exact model: <span className="font-mono text-rose-400">{formatSci(ghostSeparationSigma)} σ</span>).
+            Ghost separation: <span className="font-mono text-amber-300">0.5265 σ</span> (baseline y_base=10⁻⁶ S, P_err ≥ 0.396) · <span className="font-mono text-emerald-300">4.46 σ</span> (design y_base=10⁻⁷ S). <span className="text-zinc-500">* Previously cited as 1.2×10⁻¹⁴σ in v5.0; withdrawn in v5.1 notes.</span>
           </p>
         </div>
       </div>

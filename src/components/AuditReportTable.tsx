@@ -17,10 +17,10 @@ export const AuditReportTable: React.FC<AuditReportTableProps> = ({
       <div className="pb-3 border-b border-zinc-800/80">
         <div className="flex items-center gap-2">
           <FileText className="w-5 h-5 text-amber-400" />
-          <h2 className="text-base font-semibold text-zinc-100">Manuscript Verification & Locking Audit</h2>
+          <h2 className="text-base font-semibold text-zinc-100">v4.0 Baseline Audit & Locking Record</h2>
         </div>
         <p className="text-xs text-zinc-400 mt-1">
-          Rigorous item-by-item execution audit comparing the printed console log claims against the v4.0 linear algebra suite
+          Historical item-by-item verification comparing printed v4.0 logs against the executable baseline (superseded by Revision 5.4)
         </p>
       </div>
 

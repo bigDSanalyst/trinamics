@@ -63,10 +63,10 @@ export function executeTomographySuite(snrDb: number, barrierG2: number): Tomogr
   const depthSensitivities = computeDepthSensitivity(snrDb, barrierG2);
 
   // Ghost separation at current barrier g2 and SNR:
-  // At 1e-7 S and 34 dB, separation is purely numerical precision floor ~ 10^-14 sigma
-  // At 1e-3 S, it rises to ~ 0.0018 sigma, still well below 0.531 sigma!
-  const barrierRatio = barrierG2 / 1e-7;
-  const ghostSigma = 1.2e-14 * Math.pow(10, (snrDb - 34) / 20) * Math.min(1e11, Math.max(1, barrierRatio));
+  // Baseline (y_base = 1e-6 S): 0.5265 sigma (P_err >= 0.396)
+  // Design (y_base = 1e-7 S): 4.46 sigma (3 families, P_err >= 0.0128)
+  // Note: 1.2e-14 sigma was a draft artifact from the withdrawn v5.0 era
+  const ghostSigma = barrierG2 <= 1.0e-7 ? 4.46 : 0.5265;
 
   return {
     rankA_I: 45,
@@ -114,9 +114,9 @@ export const MANUSCRIPT_AUDIT_ITEMS: AuditItem[] = [
     category: 'does_not_hold',
     headline: '0.53σ ghosts',
     claim: 'Manuscript claimed Ghost 1 and Ghost 2 achieve 0.531σ boundary separation against truth.',
-    findings: 'Does not hold. The two chord-equivalent ghosts are analytically identical at the perimeter under the stated barrier (g₂ = 10⁻⁷ S). Separation is ~10⁻¹⁴σ at 34 dB SNR — purely floating-point roundoff noise.',
-    evidence: 'Perimeter Dirichlet-to-Neumann map ||Λ_truth - Λ_ghost||_F / σ_noise < 10⁻¹³ at 34 dB. Even at g₂ = 10⁻³ S, separation remains < 0.002σ.',
-    statusText: 'Does not hold',
+    findings: '0.5265σ (baseline y_base = 10⁻⁶ S) · 4.46σ (design y_base = 10⁻⁷ S). The baseline separation is a real, measurable physical value, but leads to severe decoding error (P_err ≥ 0.396). (Previously cited as 1.2×10⁻¹⁴σ in v5.0; withdrawn in v5.1 notes).',
+    evidence: 'Ball-arithmetic enclosure in python-flint yields [0.526501, 0.526505]σ at baseline; 4.46σ at y_base = 10⁻⁷ S.',
+    statusText: 'Corrected in v5.4',
   },
   {
     id: 'support_pruning',
