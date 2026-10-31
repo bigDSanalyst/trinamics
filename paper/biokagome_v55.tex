@@ -231,7 +231,7 @@ Let $\mathbf{L}(\mathbf{y}) = \mathbf{L}_0 + \sum_{c\in I}\Delta y_c \mathbf{E}_
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-Substituting the exact resolvent identity $(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1} = \mathbf{L}_{II,0}^{-1} - \mathbf{L}_{II,0}^{-1}\Delta\mathbf{Y}\mathbf{L}_{II,0}^{-1} + \mathbf{L}_{II,0}^{-1}\Delta\mathbf{Y}(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\Delta\mathbf{Y}\mathbf{L}_{II,0}^{-1}$ into $\Lambda_\partial = L_{BB} - L_{BI}L_{II}^{-1}L_{IB}$ yields $\Lambda_\partial(\Delta\mathbf{y}) - \Lambda_\partial(\mathbf{0}) = \mathbf{G}_0^T\Delta\mathbf{Y}\mathbf{G}_0 - \mathbf{G}_0^T\Delta\mathbf{Y}(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\Delta\mathbf{Y}\mathbf{G}_0$. Since $\|\mathbf{E}_c\|_2 = 1/3$ and the $\mathbf{E}_c$ have disjoint supports, $\|\Delta\mathbf{Y}\|_2 = \Delta y_{\max}/3$; for $\Delta\mathbf{Y}\succeq0$, $\|(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\|_2 \le 1/\lambda_{\min}(\mathbf{L}_{II,0})$. Verification (App.~\ref{app:code}): complex-step differentiation~\cite{squire1998} of $\operatorname{diag}\Lambda_\partial$ reproduces $\mathbf{A}_I$ in all 169 columns to within $1.1\times10^{-10}$ ($y_{\text{base}} = 10^{-6}$ S) and $3.5\times10^{-10}$ ($10^{-7}$ S) componentwise, and the identity in (3) holds to within $8.4\times10^{-9}$ and $8.4\times10^{-10}$ at a random admissible $\Delta\mathbf{y}$.
+Substituting the exact resolvent identity $(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1} = \mathbf{L}_{II,0}^{-1} - \mathbf{L}_{II,0}^{-1}\Delta\mathbf{Y}\mathbf{L}_{II,0}^{-1} + \mathbf{L}_{II,0}^{-1}\Delta\mathbf{Y}(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\Delta\mathbf{Y}\mathbf{L}_{II,0}^{-1}$ into $\Lambda_\partial = L_{BB} - L_{BI}L_{II}^{-1}L_{IB}$ yields $\Lambda_\partial(\Delta\mathbf{y}) - \Lambda_\partial(\mathbf{0}) = \mathbf{G}_0^T\Delta\mathbf{Y}\mathbf{G}_0 - \mathbf{G}_0^T\Delta\mathbf{Y}(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\Delta\mathbf{Y}\mathbf{G}_0$. Since $\|\mathbf{E}_c\|_2 = 1/3$ and the $\mathbf{E}_c$ have disjoint supports, $\|\Delta\mathbf{Y}\|_2 = \Delta y_{\max}/3$; for $\Delta\mathbf{Y}\succeq0$, $\|(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\|_2 \le 1/\lambda_{\min}(\mathbf{L}_{II,0})$. Verification (App.~\ref{app:code}): complex-step differentiation~\cite{squire1998} of $\operatorname{diag}\Lambda_\partial$ reproduces $\mathbf{A}_I$ in all 169 columns to within $10^{-9}$ componentwise, and the identity in (3) holds to within $2\times10^{-8}$ at a random admissible $\Delta\mathbf{y}$, for both values of $y_{\text{base}}$.
 \end{proof}
 
 \subsection{Augmented Stage-B Operator and its Identifiability}
@@ -314,7 +314,7 @@ Write $\Lambda_\partial = \mathbf{W}^T\mathbf{L}\mathbf{W}$ with $\mathbf{W} = [
 
 (2) Along $\mathbf{s}(t) = \mathbf{s}+t(\mathbf{s}'-\mathbf{s})\in[0,1]^{N_I}$, $\frac{d}{dt}\Lambda_{\partial,bb}(\mathbf{s}(t)) = \sum_c (s'_c-s_c)\,J_{bc}(\mathbf{s}(t))$ is a sum of non-negative terms of which at least one is positive by (1); integrate over $t\in[0,1]$.
 
-Verification (App.~\ref{app:code}): the sign pattern, diagonal dominance, connectivity and $\mathbf{G}[:,\text{active}] > \mathbf{0}$ at 12 states ($\mathbf{0}$, $\mathbf{s}^\star$, six uniform random states and four random binary states) for both designs; \eqref{eq:mono} against complex-step derivatives in 24 columns at two states (relative error $\le 1.7\times10^{-10}$); and, for (2), ten pairs of states that differ in one cell, with the integrand positive at six points of every segment and all 381 resolvable boundary increases positive.
+Verification (App.~\ref{app:code}): the sign pattern, diagonal dominance, connectivity and $\mathbf{G}[:,\text{active}] > \mathbf{0}$ at 12 states ($\mathbf{0}$, $\mathbf{s}^\star$, six uniform random states and four random binary states) for both designs; \eqref{eq:mono} against complex-step derivatives in 24 columns at two states (relative error $\le 10^{-9}$); and, for (2), ten pairs of states that differ in one cell, with the integrand positive at six points of every segment and all 381 resolvable boundary increases positive.
 \end{proof}
 These minima lie many orders of magnitude below the noise level $\sigma_\Lambda$ of Theorem~\ref{thm:ghost}, so Lemma~\ref{lem:monotone}(2) is a statement about exact data, not about robustness to noise. Without strictness, part (1) is Rayleigh's monotonicity law~\cite{doyle1984}; strictness at the active nodes comes from the positivity of $\mathbf{L}_{II}(\mathbf{s})^{-1}$. It does not extend to incomparable states, which Theorem~\ref{thm:ghost}(3,5) already shows can be confused.
 
@@ -475,7 +475,7 @@ For the exact statement, $R_{\text{crit}}(k)=2k+7$ means $2k+27\le\sqrt{4k^2+120
 Any linear probe set $\mathbf{P}$ satisfies $\operatorname{rank}[\mathbf{A}_I;\mathbf{P}]\le d(R)+\operatorname{rows}(\mathbf{P})$, so full rank needs at least $N_I-d(R)$ probe rows, quadratically many in $R$, whatever the design. Splitting to $k\ge R/2$ leaves no dilated translate ($T_k = 0$), and at $R = 8$ the chords alone then have full rank ($k = 4, 5$), at the cost of $k$ channels per line. How the separation in noise units of screened pairs behaves for such designs at larger $R$ is open.
 
 \begin{remark}[Conditioning of the split operators]\label{rem:splitcond}
-Rank is not resolution. At the design point the 163rd singular value of $[\mathbf{A}_I;\mathbf{C}^{(2)}]$ is $8.373\times10^{-10}$ against $\sigma_1 = 4.668$; at $y_{\text{base}} = 10^{-6}$ S it is $9.8\times10^{-16}$, at round-off level. For $[\mathbf{A}_I;\mathbf{C}^{(3)}]$ the condition number is $43{,}172$ at the design point ($43{,}171$ after column equilibration, $2{,}150$ after row equilibration) and $5.24\times10^{7}$ at $y_{\text{base}} = 10^{-6}$ S ($2.91\times10^{5}$ after row equilibration); the boundary block sees the 16 directions of $\ker\mathbf{C}^{(3)}$ with singular values from $3.99\times10^{-2}$ down to $8.80\times10^{-5}$ (down to $7.24\times10^{-8}$ at $10^{-6}$ S). The three-family subsets of Proposition~\ref{prop:split} reach full rank at a price: at the design point their condition numbers are $9.17\times10^{5}$ for $\{m,n,m-n\}$ and $2.78\times10^{7}$ for the other two. These numbers depend on how the dimensionless rows of $\mathbf{A}_I$ are weighted against the 0/1 chord rows, and $\mathbf{A}_I$ is a linearisation that misses the data at the operating point by a factor of up to 1115 (Remark~\ref{rem:mc}). The separations of Theorem~\ref{thm:splitscreen}, computed from the nonlinear model in noise units, are the relevant measure.
+Rank is not resolution. At the design point the 163rd singular value of $[\mathbf{A}_I;\mathbf{C}^{(2)}]$ is $8.373\times10^{-10}$ against $\sigma_1 = 4.668$; at $y_{\text{base}} = 10^{-6}$ S it is below $10^{-14}$, at round-off level. For $[\mathbf{A}_I;\mathbf{C}^{(3)}]$ the condition number is $43{,}172$ at the design point ($43{,}171$ after column equilibration, $2{,}150$ after row equilibration) and $5.24\times10^{7}$ at $y_{\text{base}} = 10^{-6}$ S ($2.91\times10^{5}$ after row equilibration); the boundary block sees the 16 directions of $\ker\mathbf{C}^{(3)}$ with singular values from $3.99\times10^{-2}$ down to $8.80\times10^{-5}$ (down to $7.24\times10^{-8}$ at $10^{-6}$ S). The three-family subsets of Proposition~\ref{prop:split} reach full rank at a price: at the design point their condition numbers are $9.17\times10^{5}$ for $\{m,n,m-n\}$ and $2.78\times10^{7}$ for the other two. These numbers depend on how the dimensionless rows of $\mathbf{A}_I$ are weighted against the 0/1 chord rows, and $\mathbf{A}_I$ is a linearisation that misses the data at the operating point by a factor of up to 1115 (Remark~\ref{rem:mc}). The separations of Theorem~\ref{thm:splitscreen}, computed from the nonlinear model in noise units, are the relevant measure.
 \end{remark}
 
 \begin{remark}[Standard versus mod-3 chords on the same ridges]\label{rem:splitstudy}
@@ -535,7 +535,7 @@ Intracell phase offsets & $211.22^\circ$, $334.44^\circ$ & Thm.~\ref{thm:jac}(1)
 $\max\|\mathbf{E}_0^{-1}\Delta\mathbf{E}\|_2$ & $0.55089_\uparrow$, $0.52212_\downarrow$ (first-order bound $0.800_\uparrow$, $0.556_\downarrow$) & Thm.~\ref{thm:jac}(2,3) \\
 Orientation margin & $\min\det(\mathbf{I}+\mathbf{E}_0^{-1}\Delta\mathbf{E}) = 0.57854_\uparrow$, $0.69278_\downarrow$ over 65{,}879 + 66{,}140 triangles & Thm.~\ref{thm:jac}(3) \\
 Design changes (Rev.~4.0) & $y_{\text{base}} = 10^{-7}$ S (was $10^{-6}$); fourth chord family along $m-n$ (29 lines) & §\ref{sec:inv}.1 \\
-Fréchet derivative check & complex step, $\le 1.1\times10^{-10}$ / $3.5\times10^{-10}$ ($y_{\text{base}} = 10^{-6}$ / $10^{-7}$ S, 169 columns) & Thm.~\ref{thm:frechet} \\
+Fréchet derivative check & complex step, $\le 10^{-9}$ ($y_{\text{base}} = 10^{-6}$ and $10^{-7}$ S, 169 columns) & Thm.~\ref{thm:frechet} \\
 Chord FWER & $\le 2.44\times10^{-9}$ (45 chords), $\le 4.01\times10^{-9}$ (74 chords) & Thm.~\ref{thm:ghost}(1) \\
 $\operatorname{rank}\widetilde{\mathbf{A}}_I$ & 87 (baseline), 112 (Rev.~4.0) of 169; kernel dimension 82 / 57; exact & Thm.~\ref{thm:ghost}(2) \\
 Test ridge & baseline: 3 chord-consistent patterns, separation $0.5265\,\sigma_\Lambda$, any decoder errs w.p.\ $\ge 0.396$; Rev.~4.0: determined by the chords ($\operatorname{rank}\mathbf{C}_K = K = 16$) & Thm.~\ref{thm:ghost}(3,4) \\
@@ -563,7 +563,7 @@ Convex ridges & cross ratio 2; mirror-image 8-cell parallelograms share all chor
 \begin{enumerate}[noitemsep,leftmargin=*]
 \item Section~\ref{sec:related} opens with a scope paragraph: the results of Section~\ref{sec:inv} are substrate-agnostic, and the switching-component and cross-ratio results are placed within classical discrete tomography, with the contributions of this paper listed separately.
 \item New Corollary~\ref{cor:rcrit}: a closed form for the radius $R_{\text{crit}}(k)$ beyond which $\mathbf{C}^{(k)}$ with the boundary block is rank-deficient, checked by the listing. Remarks and propositions after it are renumbered by one.
-\item The listings are re-run. Only round-off-level values move: the complex-step and remainder bounds of Theorem~\ref{thm:frechet} and Lemma~\ref{lem:monotone} and $\sigma_{163}$ at $y_{\text{base}} = 10^{-6}$ S in Remark~\ref{rem:splitcond}, all of which are quoted at the new values; no stated result changes.
+\item The listings are re-run on a second machine. Only round-off-level values differ between the two runs: the complex-step and remainder checks of Theorem~\ref{thm:frechet} and Lemma~\ref{lem:monotone} and $\sigma_{163}$ at $y_{\text{base}} = 10^{-6}$ S in Remark~\ref{rem:splitcond}. These are now stated as bounds that hold for both runs, and the listing asserts them; no stated result changes.
 \end{enumerate}
 
 % ============================================================================
@@ -681,7 +681,7 @@ Convex ridges & cross ratio 2; mirror-image 8-cell parallelograms share all chor
 \appendix
 \section{Verification Suite (Revision 5.5)}\label{app:code}
 % ============================================================================
-Requires only \texttt{numpy}; runtime $\approx$220 s on one CPU core. Every computed number in Sections~2--5 and in Tables~\ref{tab:configs}, \ref{tab:family} and~\ref{tab:specs} is printed by this listing, except the ball-arithmetic enclosures and the exact rank at $R_{\text{hex}} = 4$, which are printed by the supplementary script of App.~\ref{app:supp}. Each block raises \texttt{AssertionError} if a stated claim fails. Upper bounds are printed rounded up and lower bounds rounded down.
+Requires only \texttt{numpy}; runtime $\approx$220 s on one CPU core. Every computed number in Sections~2--5 and in Tables~\ref{tab:configs}, \ref{tab:family} and~\ref{tab:specs} is printed by this listing, except the ball-arithmetic enclosures and the exact rank at $R_{\text{hex}} = 4$, which are printed by the supplementary script of App.~\ref{app:supp}. Each block raises \texttt{AssertionError} if a stated claim fails. Upper bounds are printed rounded up and lower bounds rounded down. Round-off-level digits (complex-step errors, residuals, singular values at round-off level) and timings depend on the numpy/BLAS build and can differ from the console output below; the text states bounds for them, which the listing asserts.
 
 \begin{lstlisting}[language=Python,style=cleanstyle,caption={Verification suite for Sections~2--5, Theorems~\ref{thm:bloch}--\ref{thm:splitscale}, Corollary~\ref{cor:rcrit}, Propositions~\ref{prop:family}, \ref{prop:split} and~\ref{prop:convex} and Tables~\ref{tab:configs}, \ref{tab:family} and~\ref{tab:specs}.}]
 """Verification suite for 'Hierarchical Bio-Kagome Solid-State Metamaterials' (Revision 5.5).
@@ -1031,7 +1031,7 @@ def verify_frechet(net, L0, G0, A):
         nz = A[:, pos] != 0
         assert np.all(d[~nz] == 0)
         worst = max(worst, float(np.max(np.abs(d[nz] - A[nz, pos])/A[nz, pos])))
-    assert worst < 1e-8
+    assert worst < 1e-9                             # bound stated in Sec. 5.2 (holds on both reference machines)
     rng = np.random.default_rng(3)                  # exact second-order remainder identity (Thm 5.1(3))
     dy = rng.uniform(0, 1e-7, net.N_I)
     dY = np.diag(np.repeat(dy/3, 3))
@@ -1042,7 +1042,7 @@ def verify_frechet(net, L0, G0, A):
     ident = float(np.linalg.norm(dLam - (G0.T @ dY @ G0 + R2))/np.linalg.norm(dLam))
     ev = np.linalg.eigvalsh(LII)
     bnd = np.linalg.norm(G0, 2)**2*(dy.max()/3)**2/ev[0]
-    assert ident < 1e-6 and np.linalg.norm(R2, 2) <= bnd
+    assert ident < 2e-8 and np.linalg.norm(R2, 2) <= bnd   # 2e-8: bound stated in Sec. 5.2
     print(f"[Sec.5] y_base={s.y_base:.0e}: Thm5.1 complex-step max rel. err over {net.N_I} columns <= {up(worst, 2)}; "
           f"remainder identity residual <= {up(ident, 2)}; ||R2|| = {np.linalg.norm(R2, 2):.2e} <= {bnd:.2e}")
     print(f"[Sec.5] y_base={s.y_base:.0e}: lambda_min(L_II) = {ev[0]:.3e} S, cond(L_II) = {ev[-1]/ev[0]:.2e}; "
@@ -1511,7 +1511,7 @@ def verify_monotonicity(lin):
             d = np.diag(net.schur(net.laplacian(xc))).imag/1e-30
             nz = D[:, pos] != 0
             worst = max(worst, float(np.max(np.abs(d[nz] - D[nz, pos])/np.abs(D[nz, pos]))))
-    assert worst < 1e-6
+    assert worst < 1e-9                             # bound stated after Lemma 5.5
     print(f"[Sec.5.4] Lemma 5.5 formula w_b^T M_c w_b vs complex-step derivative (24 columns, 2 states): "
           f"max rel. error <= {up(worst, 2)}")
     claimed, tried = 1.054e-13, []
@@ -1915,6 +1915,8 @@ def verify_split_conditioning():
         Mn = M[np.linalg.norm(M, axis=1) > 0]
         sr = sv(Mn/np.linalg.norm(Mn, axis=1)[:, None]); scol = sv(M/np.linalg.norm(M, axis=0))
         _, _, Vt = np.linalg.svd(C3.astype(float)); sa = sv(A @ Vt[153:].T)
+        if yb == 1e-6:
+            assert s2[162] < 1e-14                  # Remark 5.16: sigma_163 at round-off level for y_base = 1e-6 S
         print(f"[Sec.5.5] Rem 5.16 y_base={yb:g}: [A_I; C^(2)] sigma_1 = {s2[0]:.3e}, sigma_163 = {s2[162]:.3e}, "
               f"sigma_164 = {s2[163]:.3e}; [A_I; C^(3)] sigma_max = {s3[0]:.3e}, sigma_min = {s3[-1]:.3e}, "
               f"kappa = {s3[0]/s3[-1]:.0f} (column-equilibrated {scol[0]/scol[-1]:.0f}, row-equilibrated {sr[0]/sr[-1]:.0f}); "
@@ -2213,7 +2215,7 @@ if __name__ == "__main__":
 [Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): chord gate 45 lines, p_chord <= Q(6.455) <= 5.42e-11, FWER <= 2.44e-9 (line-length-aware <= 2.48e-10); max|dLambda| = 5.9003e-14 S, w_c = 2.36e-11; ||dL - A s y_r||/||dL|| = 21.9
 [Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): K = 17, rank C_K = 13, rank [A_K; w_c C_K] = 17 (exact), sigma(A_K) ratio 6.8e-05; 3 binary pattern(s) share the chord data; ghost separation 0.5265, 0.5265 std -> any decoder errs w.p. >= 0.396
 [Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): full Schur matrix: linearised Jacobian rank 169 of 169 (exact); ghost separation 0.794, 0.794 std -> decoder error >= 0.345; sigma(A_K) = [6.30e-10, 4.31e-14]
-[Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): MC 2000 @ 34.0 dB: K in [17, 17]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 2.3e-10); maximum likelihood 1239/2000 (0.006 ms/trial select)
+[Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): MC 2000 @ 34.0 dB: K in [17, 17]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 2.3e-10); maximum likelihood 1239/2000 (0.007 ms/trial select)
 [Sec.5] y_base=1e-07: Thm5.1 complex-step max rel. err over 169 columns <= 3.5e-10; remainder identity residual <= 8.4e-10; ||R2|| = 2.91e-09 <= 2.58e-08
 [Sec.5] y_base=1e-07: lambda_min(L_II) = 3.888e-08 S, cond(L_II) = 1.67e+06; remainder bound at dy = y_ridge: 1.61e+01 S
 [Sec.5] y_base=1e-7, 3 fam: 144 boundary nodes, 75 without interior neighbour, 45 distinct rows -> rank A_I = 45; 3 chord families, 45 lines, rank C = 42; rank [A_I; w_c C] = 87 of 169; dim ker = 82 (exact)
@@ -2299,7 +2301,7 @@ if __name__ == "__main__":
 [Sec.5.5] Rem 5.17 connected loop-free 12, mod-3 chords (216 rows): unique chord data 100/100, ML exact 20000/20000
 [Sec.5.6] Prop 5.18: cross ratio of the four chord slopes = 2; 48853 convex lattice sets generated by <= 4 of the 37 cells within radius 3: three families: 344 chord-data classes with distinct convex sets, smallest 4 cells; four families: 15 classes, smallest 8 cells
 [Sec.5.6] Prop 5.18: the two lattice parallelograms S+ u I and S- u I (I = 4 interior points) are convex, have identical chord data in all four families and differ by the switching component; 102 placements in the interior; isolated (70 placements, radius <= 6): separation 30.08 .. 89.84 std; inside the closed radius-6 ring (44 placements): 1.44e-8 .. 6.14e-4 std -> every decoder errs w.p. >= 0.4998 on one ridge of each pair
-[done] 199 s
+[done] 157 s
 \end{lstlisting}
 
 \subsection{Supplementary exact-arithmetic checks}\label{app:supp}
