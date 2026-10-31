@@ -6,12 +6,14 @@ import { MaterialsPhysicsBench } from './components/MaterialsPhysicsBench';
 import { V54Identifiability } from './components/V54Identifiability';
 import { V54AsymptoticLimit } from './components/V54AsymptoticLimit';
 import { V54Comparison } from './components/V54Comparison';
-import { Layers, Cpu, RotateCcw, Sparkles, Download, TrendingUp, Scale } from 'lucide-react';
+import { LatticeViewer } from './components/LatticeViewer';
+import { Layers, Cpu, RotateCcw, Sparkles, Download, TrendingUp, Scale, Grid3x3 } from 'lucide-react';
 
-export type AppTab = 'identifiability' | 'asymptotic' | 'revisions' | 'band' | 'wake';
+export type AppTab = 'identifiability' | 'lattice' | 'asymptotic' | 'revisions' | 'band' | 'wake';
 
 const TABS: { id: AppTab; label: string; icon: React.ElementType; group: 'tomography' | 'physics'; active: string }[] = [
   { id: 'identifiability', label: 'Identifiability', icon: Sparkles, group: 'tomography', active: 'bg-emerald-950 text-emerald-200 border-emerald-700' },
+  { id: 'lattice', label: 'Lattice', icon: Grid3x3, group: 'tomography', active: 'bg-sky-950 text-sky-200 border-sky-700' },
   { id: 'asymptotic', label: 'Asymptotic Limit', icon: TrendingUp, group: 'tomography', active: 'bg-amber-950 text-amber-200 border-amber-700' },
   { id: 'revisions', label: 'Revision History', icon: Scale, group: 'tomography', active: 'bg-cyan-950 text-cyan-200 border-cyan-700' },
   { id: 'band', label: 'Bloch Spectrum (§3.2)', icon: Layers, group: 'physics', active: 'bg-indigo-950 text-indigo-200 border-indigo-700' },
@@ -149,6 +151,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full flex flex-col space-y-6">
         {activeTab === 'identifiability' && <V54Identifiability />}
+        {activeTab === 'lattice' && <LatticeViewer breathingDelta={params.breathingDelta} />}
         {activeTab === 'asymptotic' && <V54AsymptoticLimit />}
         {activeTab === 'revisions' && <V54Comparison />}
         {activeTab === 'band' && (

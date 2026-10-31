@@ -56,11 +56,20 @@ Supplementary ball-arithmetic checks (need python-flint):
     npm install
     npm run dev
 
-Five tabs: Identifiability, Asymptotic Limit and Revision History (Section 5
-and the paper's revision notes), Bloch Spectrum (Section 3.2) and Piezo
-Wake-Up (Section 3.1). Every value shown is quoted from the paper or computed
-with its formulas. Rank and asymptotic data live in src/utils/tomography_v54.ts,
-the revision history in src/data/audit_items_v54.ts.
+Six tabs: Identifiability, Lattice, Asymptotic Limit and Revision History
+(Section 5 and the paper's revision notes), Bloch Spectrum (Section 3.2) and
+Piezo Wake-Up (Section 3.1). Every value shown is quoted from the paper or
+computed with its formulas. Rank and asymptotic data live in
+src/utils/tomography_v54.ts, the revision history in src/data/audit_items_v54.ts.
+
+The Lattice tab's data (cells, boundary-node classes, the test ridge and its
+ghosts, switching and convex pairs with their separations, and the Lemma 5.5
+boundary response) is generated from the verification script:
+
+    pip install numpy
+    python scripts/export_lattice_data.py    # writes src/data/lattice_v55.ts
+
+The export stops if any count differs from the paper.
 
 ## License
 
