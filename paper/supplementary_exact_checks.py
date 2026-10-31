@@ -1,4 +1,4 @@
-"""Supplementary exact-arithmetic checks for Revision 5.4 (independent of numpy linear algebra).
+"""Supplementary exact-arithmetic checks for Revision 5.5 (independent of numpy linear algebra).
 
 (a) Theorem 5.2(3), Revision-3.9 baseline (y_base = 1e-6, three chord families): boundary signatures
     diag(Lambda(s) - Lambda(0)) of the test ridge and its two chord-consistent ghosts.
@@ -9,14 +9,14 @@
 (a), (b) and (d) use 256-bit ball arithmetic (python-flint) directly on differences of Schur complements and
 report rigorous enclosures; (c) uses exact rational matrices.
 
-Usage (same folder as biokagome_v54_verify.py):  pip install python-flint numpy
+Usage (same folder as biokagome_v55_verify.py):  pip install python-flint numpy
                                                   python supplementary_exact_checks.py
 Runtime about 40 s.
 """
 import itertools, math
 import numpy as np
 from flint import arb, arb_mat, ctx
-from biokagome_v54_verify import Spec, BASELINE, Network, RIDGES, Q, switching_component, exact_laplacian, replace
+from biokagome_v55_verify import Spec, BASELINE, Network, RIDGES, Q, switching_component, exact_laplacian, replace
 import flint
 
 ctx.prec = 256

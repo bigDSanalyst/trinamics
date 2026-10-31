@@ -1,4 +1,4 @@
-"""Verification suite for 'Hierarchical Bio-Kagome Solid-State Metamaterials' (Revision 5.4).
+"""Verification suite for 'Hierarchical Bio-Kagome Solid-State Metamaterials' (Revision 5.5).
 
 Every number printed is computed below; no result string is hard-coded.  Only numpy is
 required (exact ranks use a self-contained modular-arithmetic elimination).
@@ -1189,8 +1189,36 @@ def verify_split_ranks():
     print("[Sec.5.5] Prop 5.12 mod-3 family subsets, rank C | rank [A_I; C] (exact): " + ", ".join(out))
 
 
+def verify_rcrit():
+    """Corollary 5.15: R_crit(k) formula matches observed transitions."""
+    import math
+    def R_crit(k):
+        return int((10*k + 9 + math.sqrt(4*k*k + 120*k + 33)) / 6) + 1
+    def R_unc(k):
+        return int((10*k + 21 + math.sqrt(4*k*k + 360*k + 429)) / 6) + 1
+    def T(k, R):
+        return 3*R*R - (10*k + 3)*R + 8*k*k + 5*k + 1 if R >= 2*k + 1 else 0
+    def brute(k, d):  # smallest R0 with T_k(R) > d(R) for every R >= R0 (quadratic: beyond 4k+60 nothing changes)
+        return 1 + max(R for R in range(1, 4*k + 60) if T(k, R) <= d(R))
+    expected = {1: 6, 2: 8, 3: 10, 4: 13, 5: 15}
+    for k, want in expected.items():
+        got = R_crit(k)
+        assert got == want, f"R_crit({k}) = {got}, expected {want}"
+    for k in range(1, 501):
+        assert R_crit(k) == brute(k, lambda R: 6*R - 3), k
+        assert R_unc(k) == brute(k, lambda R: 18*R), k
+        assert (R_crit(k) - 2*k == 7) == (k >= 58), k
+    assert R_unc(3) == 16  # matches the R >= 16 of Theorem 5.14
+    # asymptotic check: additive constant approaches 7
+    for k in (100, 1000, 10000):
+        gap = R_crit(k) - 2 * k
+        assert 6 <= gap <= 7, f"R_crit({k}) - 2k = {gap}, expected 6..7"
+    print(f"[Sec.5.5] Cor 5.15: R_crit(k) verified for k=1..5 "
+          f"(1:6, 2:8, 3:10, 4:13, 5:15); R_crit(10000) - 20000 = {R_crit(10000)-20000} (asymptote 7)")
+
+
 def verify_split_conditioning():
-    """Remark 5.15: singular values of the stacked linear operators."""
+    """Remark 5.16: singular values of the stacked linear operators."""
     sv = lambda M: np.linalg.svd(M, compute_uv=False)
     for yb in (1e-7, 1e-6):
         net = Network(replace(Spec(), chord_families=4, y_base=yb))
@@ -1201,7 +1229,7 @@ def verify_split_conditioning():
         Mn = M[np.linalg.norm(M, axis=1) > 0]
         sr = sv(Mn/np.linalg.norm(Mn, axis=1)[:, None]); scol = sv(M/np.linalg.norm(M, axis=0))
         _, _, Vt = np.linalg.svd(C3.astype(float)); sa = sv(A @ Vt[153:].T)
-        print(f"[Sec.5.5] Rem 5.15 y_base={yb:g}: [A_I; C^(2)] sigma_1 = {s2[0]:.3e}, sigma_163 = {s2[162]:.3e}, "
+        print(f"[Sec.5.5] Rem 5.16 y_base={yb:g}: [A_I; C^(2)] sigma_1 = {s2[0]:.3e}, sigma_163 = {s2[162]:.3e}, "
               f"sigma_164 = {s2[163]:.3e}; [A_I; C^(3)] sigma_max = {s3[0]:.3e}, sigma_min = {s3[-1]:.3e}, "
               f"kappa = {s3[0]/s3[-1]:.0f} (column-equilibrated {scol[0]/scol[-1]:.0f}, row-equilibrated {sr[0]/sr[-1]:.0f}); "
               f"A_I on ker C^(3): singular values {sa[0]:.2e} .. {sa[-1]:.2e}")
@@ -1209,7 +1237,7 @@ def verify_split_conditioning():
         for sub in (("m", "n", "q"), ("m", "p", "q"), ("n", "p", "q")):
             st = sv(np.vstack([A, split_rows(net, sub, 3)]))
             trip.append(f"{''.join(sub)} {st[0]/st[-1]:.2e}")
-        print(f"[Sec.5.5] Rem 5.15 y_base={yb:g}: kappa of [A_I; C^(3)] on the full-rank three-family subsets: " + ", ".join(trip))
+        print(f"[Sec.5.5] Rem 5.16 y_base={yb:g}: kappa of [A_I; C^(3)] on the full-rank three-family subsets: " + ", ".join(trip))
 
 
 def verify_split_screening():
@@ -1285,7 +1313,7 @@ def verify_split_scaling():
 
 
 def split_decoding_study():
-    """Remark 5.16: standard versus mod-3 split chords on the same seeded ridges."""
+    """Remark 5.17: standard versus mod-3 split chords on the same seeded ridges."""
     net = Network(Spec()); s = net.s
     L0, G0 = linear_model(net)[:2]
     inner = [c for c in net.pos if radius(c) <= 5]; inner_set = set(inner)
@@ -1341,7 +1369,7 @@ def split_decoding_study():
                 if len(sols) > 1:
                     multi.append(f"{len(sols)} patterns, ML {ok}/200, separations "
                                  f"{[round(float(np.linalg.norm(sigs[q] - dL)/sd), 2) for q in keys if q != tk]} std")
-            print(f"[Sec.5.5] Rem 5.16 {cname}, {dname} chords ({C.shape[0]} rows): unique chord data {uniq}/100, "
+            print(f"[Sec.5.5] Rem 5.17 {cname}, {dname} chords ({C.shape[0]} rows): unique chord data {uniq}/100, "
                   f"ML exact {n_ok}/20000" + (f"; non-unique: {'; '.join(multi)}" if multi else ""))
 
 
@@ -1392,7 +1420,7 @@ def chord_data(cells, fams):
 
 
 def verify_convex(lin):
-    """Proposition 5.17: convex ridges with identical chord data, and how well the boundary separates them."""
+    """Proposition 5.18: convex ridges with identical chord data, and how well the boundary separates them."""
     slopes = (-1.0, 0.0, 1.0)                       # with infinity: cross ratio (c-a)/(c-b) for a<b<c<inf
     cr = (slopes[2] - slopes[0])/(slopes[2] - slopes[1])
     assert cr == 2.0
@@ -1410,7 +1438,7 @@ def verify_convex(lin):
         coll = [g for g in groups.values() if len(g) > 1]
         res[len(fams)] = (len(coll), min(len(g[0]) for g in coll))
     assert res[3][1] == 4 and res[4][1] == 8
-    print(f"[Sec.5.6] Prop 5.17: cross ratio of the four chord slopes = {cr:g}; {len(convex)} convex lattice sets generated by "
+    print(f"[Sec.5.6] Prop 5.18: cross ratio of the four chord slopes = {cr:g}; {len(convex)} convex lattice sets generated by "
           f"<= 4 of the {len(W)} cells within radius 3: three families: {res[3][0]} chord-data classes with distinct convex "
           f"sets, smallest {res[3][1]} cells; four families: {res[4][0]} classes, smallest {res[4][1]} cells")
     plus, minus = switching_component(net)
@@ -1432,7 +1460,7 @@ def verify_convex(lin):
     iso = np.array([sep(F1, F2) for F1, F2 in pairs if all(radius(c) <= s.R_hex - 2 for c in F1 | F2)])
     ring = [c for c in net.pos if radius(c) == s.R_hex - 2]
     enc = np.array([sep(set(ring) | F1, set(ring) | F2) for F1, F2 in pairs if all(radius(c) < s.R_hex - 2 for c in F1 | F2)])
-    print(f"[Sec.5.6] Prop 5.17: the two lattice parallelograms S+ u I and S- u I (I = 4 interior points) are convex, have "
+    print(f"[Sec.5.6] Prop 5.18: the two lattice parallelograms S+ u I and S- u I (I = 4 interior points) are convex, have "
           f"identical chord data in all four families and differ by the switching component; {len(pairs)} placements in the "
           f"interior; isolated ({len(iso)} placements, radius <= {s.R_hex - 2}): separation {dn(iso.min(), 4)} .. "
           f"{up(iso.max(), 4)} std; inside the closed radius-{s.R_hex - 2} ring ({len(enc)} placements): {dn(enc.min(), 3)} .. "
@@ -1475,6 +1503,7 @@ if __name__ == "__main__":
     verify_split_ranks()
     verify_split_screening()
     verify_split_scaling()
+    verify_rcrit()
     verify_split_conditioning()
     split_decoding_study()
     verify_convex(lin)
