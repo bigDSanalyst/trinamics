@@ -3,7 +3,7 @@ export interface AuditItemV54 {
   claim: string;
   statusV40: string;
   statusV54: string;
-  category: 'holds' | 'narrower' | 'corrected' | 'new_in_v54';
+  category: 'holds' | 'narrower' | 'corrected' | 'new_in_v54' | 'new_in_v55';
   details: string;
   verificationEvidence: string;
 }
@@ -78,7 +78,7 @@ export const MANUSCRIPT_AUDIT_ITEMS_V54: AuditItemV54[] = [
     statusV40: 'Not in v4.0',
     statusV54: 'Rank 163 / 169 (mod-2 parity split) → Rank 169 / 169 (mod-3 split at R=8)',
     category: 'new_in_v54',
-    details: 'Reading lines with alternating parity (k=2) leaves kernel 6. Adding period-3 (k=3) achieves full rank 169/169 at R_hex=8. The kernels ker(C^(2)) and ker(C^(3)) are orthogonal, not nested.',
+    details: 'Reading lines with alternating parity (k=2) leaves kernel 6. Adding period-3 (k=3) achieves full rank 169/169 at R_hex=8. The kernels ker(C^(2)) and ker(C^(3)) are not nested.',
     verificationEvidence: 'Translates of dilated component span split kernels; ker C^(2) has 24 non-zero mod-3 sums per translate.',
   },
   {
@@ -88,15 +88,33 @@ export const MANUSCRIPT_AUDIT_ITEMS_V54: AuditItemV54[] = [
     statusV54: 'No fixed k works for all R; k=3 fails at R ≥ 10 (deficient by 1..3 at R=10, 25+ at R=11)',
     category: 'new_in_v54',
     details: 'Kernel dimension T_k(R) = 3R² - (10k+3)R + 8k² + 5k + 1 grows as Θ(R²), whereas distinct boundary data d(R) = 6R - 3 grows only as Θ(R). Deficiency is inevitable for any fixed k.',
-    verificationEvidence: 'Exact mod-p calculations for R=2..15; R_crit(k) closed-form corollary.',
+    verificationEvidence: 'Exact ranks for R = 2..9 and 11, range 268..270 at R = 10 (mod-p lower bounds); d(R) = 6R − 3 checked for R = 2..15.',
   },
   {
     id: 'cross_ratio_witness',
-    claim: 'Convex ridge identifiability (Proposition 5.17)',
+    claim: 'Convex ridge identifiability (Proposition 5.18)',
     statusV40: 'Not in v4.0',
     statusV54: 'Cross-ratio 2.0 excluded by Gardner-Gritzmann; explicit 8-cell convex mirror pair',
     category: 'new_in_v54',
     details: 'Slopes {-1, 0, 1, ∞} have cross-ratio 2.0. The obstruction is realized by two convex 8-cell lattice parallelograms sharing identical 4-family chord data at 102 interior placements.',
     verificationEvidence: 'Lattice closure conv(plus + I) = conv(minus + I); chord line sums match identically in all 4 families.',
+  },
+  {
+    id: 'critical_radius',
+    claim: 'Critical radius for split order k (Corollary 5.15)',
+    statusV40: 'Not in v4.0',
+    statusV54: 'R_crit(k) = ⌊(10k + 9 + √(4k² + 120k + 33))/6⌋ + 1: 6, 8, 10, 13, 15 for k = 1..5; = 2k + 7 exactly when k ≥ 58',
+    category: 'new_in_v55',
+    details: 'Closed form for the radius at which T_k(R) exceeds d(R) = 6R − 3, so that [A_I; C^(k)] is rank-deficient by Theorem 5.14. For k = 1 and k = 3 it matches the observed onsets (R = 6 and R = 10); for other k it is a bound. Using only d(R) ≤ 18R, deficiency holds for R ≥ 16 when k = 3.',
+    verificationEvidence: 'verify_rcrit() in biokagome_v55_verify.py: k = 1..5 table, brute-force agreement with the definition for k = 1..500, asymptote check.',
+  },
+  {
+    id: 'scope_prior_art',
+    claim: 'Scope and prior-art grounding (Section 1.1)',
+    statusV40: 'Not in v4.0',
+    statusV54: 'Section 5 theorems are substrate-agnostic; switching components are Hajdu–Tijdeman / Ryser, cross-ratio criterion is Gardner–Gritzmann',
+    category: 'new_in_v55',
+    details: 'The identifiability results hold for any passive resistor-shunt network with this Breathing Kagome topology, independent of the illustrative material parameters of Sections 2–4. Contributions specific to this paper: T_k(R) on the hexagonal domain, rank J ≤ 45, the fixed-k breakdown, and the explicit cross-ratio-2 witness at R_hex = 8.',
+    verificationEvidence: 'Statement of scope; no new computation.',
   },
 ];

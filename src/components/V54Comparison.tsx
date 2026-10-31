@@ -13,13 +13,13 @@ export const V54Comparison: React.FC = () => {
               <span className="text-xs px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 font-mono border border-cyan-800 font-semibold uppercase tracking-wider">
                 Evolution & Errata Matrix
               </span>
-              <span className="text-xs text-zinc-400 font-mono">v4.0 Baseline → v5.4 Executed</span>
+              <span className="text-xs text-zinc-400 font-mono">v4.0 Baseline → v5.5 Executed</span>
             </div>
             <h2 className="text-xl font-bold text-zinc-100 mt-1 tracking-tight">
-              v5.4 vs v4.0 Comparative Verification
+              v5.5 vs v4.0 Comparative Verification
             </h2>
             <p className="text-xs text-zinc-400 mt-1 max-w-2xl leading-relaxed">
-              Transparent, item-by-item accounting of what held unchanged, what was corrected from preliminary drafts, and what new theorems were established in Revision 5.4.
+              Transparent, item-by-item accounting of what held unchanged, what was corrected from preliminary drafts, and what new theorems were established in Revisions 5.4 and 5.5.
             </p>
           </div>
 
@@ -27,6 +27,7 @@ export const V54Comparison: React.FC = () => {
             <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-emerald-400">Holds / Confirmed</span>
             <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-amber-400">Corrected</span>
             <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-cyan-400">New in v5.4</span>
+            <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-violet-400">New in v5.5</span>
           </div>
         </div>
       </div>
@@ -39,7 +40,7 @@ export const V54Comparison: React.FC = () => {
               <tr>
                 <th className="p-3.5 w-1/4">Claim / Problem Domain</th>
                 <th className="p-3.5 w-1/3 text-zinc-400">v4.0 / Draft Status</th>
-                <th className="p-3.5 w-5/12 text-zinc-200">v5.4 Manuscript Reality</th>
+                <th className="p-3.5 w-5/12 text-zinc-200">v5.5 Manuscript Reality</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800/60">
@@ -48,13 +49,14 @@ export const V54Comparison: React.FC = () => {
                 if (item.category === 'holds') badgeColor = 'bg-emerald-950 text-emerald-300 border-emerald-800';
                 if (item.category === 'corrected') badgeColor = 'bg-amber-950 text-amber-300 border-amber-800';
                 if (item.category === 'new_in_v54') badgeColor = 'bg-cyan-950 text-cyan-300 border-cyan-800';
+                if (item.category === 'new_in_v55') badgeColor = 'bg-violet-950 text-violet-300 border-violet-800';
 
                 return (
                   <tr key={item.id} className="hover:bg-zinc-900/50 transition-colors">
                     <td className="p-3.5 font-sans">
                       <div className="font-semibold text-zinc-100">{item.claim}</div>
                       <span className={`inline-block mt-1 px-1.5 py-0.5 rounded text-[10px] font-mono border ${badgeColor}`}>
-                        {item.category === 'holds' ? 'Confirmed' : item.category === 'corrected' ? 'Corrected' : 'New in v5.4'}
+                        {item.category === 'holds' ? 'Confirmed' : item.category === 'corrected' ? 'Corrected' : item.category === 'new_in_v55' ? 'New in v5.5' : 'New in v5.4'}
                       </span>
                     </td>
                     <td className="p-3.5 text-zinc-400 font-mono align-top">
@@ -84,7 +86,7 @@ export const V54Comparison: React.FC = () => {
           Archaeological Principle: Preservation of Historical Revisions
         </div>
         <p className="leading-relaxed">
-          The previous tabs (<span className="text-zinc-300">Tomography & Lattice</span>, <span className="text-zinc-300">v4.0 Audit</span>, <span className="text-zinc-300">Materials Bench</span>) document the initial v4.0 suite baseline. Rather than overwriting the record of what was previously claimed, the v5.4 suite adds the exact algebraic resolution and documents why preliminary draft numbers were revised.
+          The previous tabs (<span className="text-zinc-300">Tomography & Lattice</span>, <span className="text-zinc-300">v4.0 Audit</span>, <span className="text-zinc-300">Materials Bench</span>) document the initial v4.0 suite baseline. Rather than overwriting the record of what was previously claimed, the v5.4–v5.5 suite adds the exact algebraic resolution and documents why preliminary draft numbers were revised.
         </p>
       </div>
     </div>

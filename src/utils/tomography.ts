@@ -115,7 +115,7 @@ export const MANUSCRIPT_AUDIT_ITEMS: AuditItem[] = [
     headline: '0.53σ ghosts',
     claim: 'Manuscript claimed Ghost 1 and Ghost 2 achieve 0.531σ boundary separation against truth.',
     findings: '0.5265σ (baseline y_base = 10⁻⁶ S) · 4.46σ (design y_base = 10⁻⁷ S). The baseline separation is a real, measurable physical value, but leads to severe decoding error (P_err ≥ 0.396). (Previously cited as 1.2×10⁻¹⁴σ in v5.0; withdrawn in v5.1 notes).',
-    evidence: 'Ball-arithmetic enclosure in python-flint yields [0.526501, 0.526505]σ at baseline; 4.46σ at y_base = 10⁻⁷ S.',
+    evidence: 'Ball-arithmetic enclosures in python-flint give 0.526493σ and 0.526535σ for the two ghosts at baseline (supplementary check (a)); 4.46σ at y_base = 10⁻⁷ S.',
     statusText: 'Corrected in v5.4',
   },
   {

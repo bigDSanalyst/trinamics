@@ -27,10 +27,17 @@ export const V54AsymptoticLimit: React.FC = () => {
     .map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${getX(p.R).toFixed(1)} ${getY(p.nInterior).toFixed(1)}`)
     .join(' ');
 
-  // Points for rank[A_I; C^(3)] curve
-  const rankPath = points
+  // Points for rank[A_I; C^(3)] curve: computed ranks (R <= 11) solid,
+  // Theorem 5.14 upper bound (R >= 11, ranks not computed) dashed
+  const toPath = (pts: AsymptoticCurvePoint[]) => pts
     .map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${getX(p.R).toFixed(1)} ${getY(p.rankMod3).toFixed(1)}`)
     .join(' ');
+  const rankPath = toPath(points.filter((p) => p.rankKind !== 'upper_bound'));
+  const boundPath = toPath(points.filter((p) => p.R >= 11));
+  const formatRank = (p: AsymptoticCurvePoint) =>
+    p.rankKind === 'range' ? `${p.rankMod3}–${p.maxPossibleRank}` : p.rankKind === 'upper_bound' ? `≤ ${p.rankMod3}` : `${p.rankMod3}`;
+  const formatKernel = (p: AsymptoticCurvePoint) =>
+    p.rankKind === 'range' ? `${p.nInterior - p.maxPossibleRank}–${p.nInterior - p.rankMod3}` : p.rankKind === 'upper_bound' ? `≥ ${p.nInterior - p.rankMod3}` : `${p.nInterior - p.rankMod3}`;
 
   // X coords for vertical zones
   const xR9 = getX(9.5);
@@ -86,6 +93,10 @@ export const V54AsymptoticLimit: React.FC = () => {
             <div className="flex items-center gap-1.5">
               <span className="w-3 h-0.5 bg-emerald-400"></span>
               <span className="text-emerald-300 font-semibold">rank[A_I; C^(3)]</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-0 border-t-2 border-dashed border-rose-400"></span>
+              <span className="text-rose-300">upper bound (Thm 5.14, not computed)</span>
             </div>
           </div>
         </div>
@@ -196,6 +207,13 @@ export const V54AsymptoticLimit: React.FC = () => {
               strokeWidth="2.5"
               strokeLinecap="round"
             />
+            <path
+              d={boundPath}
+              fill="none"
+              stroke="#f43f5e"
+              strokeWidth="2"
+              strokeDasharray="5 4"
+            />
 
             {/* Point circles */}
             {points.map((pt) => {
@@ -210,8 +228,8 @@ export const V54AsymptoticLimit: React.FC = () => {
                     cx={cx}
                     cy={cyRank}
                     r={isHovered ? 6 : pt.R === 8 ? 5.5 : 4}
-                    fill={color}
-                    stroke="#09090b"
+                    fill={pt.rankKind === 'upper_bound' ? '#09090b' : color}
+                    stroke={pt.rankKind === 'upper_bound' ? color : '#09090b'}
                     strokeWidth="1.5"
                     className="cursor-pointer transition-all"
                     onMouseEnter={() => setHoveredPoint(pt)}
@@ -284,8 +302,8 @@ export const V54AsymptoticLimit: React.FC = () => {
                 </span>
               </div>
               <div className="text-zinc-300">Total Cells N_I: <span className="font-bold text-zinc-100">{hoveredPoint.nInterior}</span></div>
-              <div className="text-zinc-300">Rank [A_I; C^(3)]: <span className="font-bold text-emerald-400">{hoveredPoint.rankMod3}</span></div>
-              <div className="text-zinc-300">Kernel Dimension: <span className="font-bold text-amber-400">{hoveredPoint.nInterior - hoveredPoint.rankMod3}</span></div>
+              <div className="text-zinc-300">Rank [A_I; C^(3)]: <span className="font-bold text-emerald-400">{formatRank(hoveredPoint)}</span></div>
+              <div className="text-zinc-300">Kernel Dimension: <span className="font-bold text-amber-400">{formatKernel(hoveredPoint)}</span></div>
               <div className="text-zinc-400 text-[11px] pt-1 border-t border-zinc-800">
                 Dilated translates T_3(R): {hoveredPoint.tCount} · Boundary d(R): {hoveredPoint.distinctBoundaryD}
               </div>
@@ -305,10 +323,11 @@ export const V54AsymptoticLimit: React.FC = () => {
             </h4>
           </div>
           <div className="p-3 bg-zinc-950 rounded-lg border border-zinc-800 font-mono text-xs text-amber-300">
-            R_crit(k) = ⌈ (10k + 9 + √(4k² + 120k + 33)) / 6 ⌉
+            R_crit(k) = ⌊ (10k + 9 + √(4k² + 120k + 33)) / 6 ⌋ + 1
           </div>
+          <div className="text-[10px] font-mono text-cyan-400">Corollary 5.15 · Revision 5.5</div>
           <p className="text-xs text-zinc-300 leading-relaxed">
-            The exact threshold where the number of dilated switching components T_k(R) exceeds the boundary dimension d(R) = 6R − 3:
+            The radius beyond which the number of dilated switching components T_k(R) exceeds the boundary dimension d(R) = 6R − 3:
           </p>
           <div className="grid grid-cols-2 gap-2 font-mono text-xs">
             {TOMOGRAPHY_V54.r_crit_values.map((item) => (
@@ -319,7 +338,7 @@ export const V54AsymptoticLimit: React.FC = () => {
             ))}
           </div>
           <div className="text-[11px] font-mono text-zinc-500">
-            * Note: At k=4, R_crit = 13 (not 12; the informal "2k+4" heuristic fails at k ≥ 4).
+            * R_crit(k) = 2k + {TOMOGRAPHY_V54.r_crit_asymptote.constant} exactly when k ≥ {TOMOGRAPHY_V54.r_crit_asymptote.fromK} (not 2k + 4). Without assuming d(R) = 6R − 3, using only d(R) ≤ 18R, deficiency holds for R ≥ {TOMOGRAPHY_V54.r_unconditional_values.map((u) => u.rUnc).join(', ')} (k = 1..5).
           </div>
         </div>
 
