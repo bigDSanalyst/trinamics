@@ -40,7 +40,7 @@ export const TOMOGRAPHY_V54 = {
       color: '#64748b', // Slate
     },
     {
-      stage: '+ 3 families',
+      stage: 'A_I + C (3 fam.)',
       rank: 87,
       kernel: 82,
       total: 169,
@@ -49,7 +49,7 @@ export const TOMOGRAPHY_V54 = {
       color: '#0284c7', // Sky
     },
     {
-      stage: '+ 4 families',
+      stage: 'A_I + C (4 fam.)',
       rank: 112,
       kernel: 57,
       total: 169,
@@ -58,20 +58,20 @@ export const TOMOGRAPHY_V54 = {
       color: '#f59e0b', // Amber
     },
     {
-      stage: '+ mod-2 split',
+      stage: 'A_I + C⁽²⁾',
       rank: 163,
       kernel: 6,
       total: 169,
-      probeDescription: 'Parity split per line (146 rows, rank 118). Resolves 4th-order hexadecapole',
+      probeDescription: 'Four-family lines split by parity, in place of C (146 rows, rank 118)',
       fraction: 163 / 169,
       color: '#8b5cf6', // Violet
     },
     {
-      stage: '+ mod-3 split',
+      stage: 'A_I + C⁽³⁾',
       rank: 169,
       kernel: 0,
       total: 169,
-      probeDescription: 'Period-3 split per line (216 rows, rank 153). Full rank at R_hex = 8',
+      probeDescription: 'Four-family lines split mod 3, in place of C (216 rows, rank 153). Full rank at R_hex = 8',
       fraction: 169 / 169,
       color: '#10b981', // Emerald
     },
@@ -109,34 +109,4 @@ export const TOMOGRAPHY_V54 = {
   r_unconditional_values: [
     { k: 1, rUnc: 10 }, { k: 2, rUnc: 13 }, { k: 3, rUnc: 16 }, { k: 4, rUnc: 18 }, { k: 5, rUnc: 20 },
   ],
-
-  // Ghost Separation data
-  ghost_separation: {
-    baseline_ybase: '1.000e-6 S',
-    baseline_sigma: 0.5265,
-    baseline_perr: 0.396,
-    design_ybase: '1.000e-7 S',
-    design_sigma: 4.46,
-    design_perr: 0.0128,
-    withdrawn_v50_value: '1.200e-14 σ',
-  },
-
-  // Closed ridge loop screening (Theorem 5.7)
-  screening_loop: {
-    cells_in_loop: 36,
-    placements: 44,
-    min_separation_sigma: 1.44e-8,
-    max_separation_sigma: 6.27e-4,
-    min_decoder_error: 0.4998,
-  },
-
-  // Gardner-Gritzmann cross ratio 2 witness (Prop 5.18)
-  cross_ratio_witness: {
-    slopes: [-1.0, 0.0, 1.0],
-    cross_ratio: 2.0,
-    convex_cell_count: 8,
-    parallelogram_placements: 102,
-    isolated_separation_range: '30.09 .. 44.62 σ',
-    framed_separation_range: '6.27e-4 σ (P_err >= 0.4998)',
-  },
 };

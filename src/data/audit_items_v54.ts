@@ -1,120 +1,187 @@
-export interface AuditItemV54 {
+/**
+ * Revision history of the paper's results, taken only from the revision notes at the end of
+ * the manuscript (Revisions 3.9 to 5.5). Each entry names the earlier claim, the revision that
+ * made it, and what Revision 5.5 states instead.
+ */
+export interface RevisionItem {
   id: string;
-  claim: string;
-  statusV40: string;
-  statusV54: string;
-  category: 'holds' | 'narrower' | 'corrected' | 'new_in_v54' | 'new_in_v55';
-  details: string;
-  verificationEvidence: string;
+  result: string;
+  earlier: string;
+  earlierRevision: string;
+  current: string;
+  category: 'confirmed' | 'corrected' | 'new' | 'not_adopted';
+  changedIn: string;
 }
 
-export const MANUSCRIPT_AUDIT_ITEMS_V54: AuditItemV54[] = [
+export const REVISION_HISTORY: RevisionItem[] = [
   {
-    id: 'rank_4fam',
-    claim: 'rank([A_I; C_4fam]) on 169 interior cells',
-    statusV40: 'Rank 112 (kernel 57)',
-    statusV54: 'Rank 112 (kernel 57) — exact and unchanged over F_p and Q',
-    category: 'holds',
-    details: 'The joint operator combining diagonal boundary response and 4 unbroken chord families reaches rank 112 of 169.',
-    verificationEvidence: 'Fraction-free Bareiss elimination over Z gives rank(C_4) = 67; combined mod p=2^31-1 gives rank 112.',
-  },
-  {
-    id: 'support_pruning',
-    claim: 'Gate candidate count (K) on test ridge',
-    statusV40: 'Printed log claimed "14" or "22 → 14"',
-    statusV54: 'Exact K = 16 for 4 families (K = 17 for 3 families)',
+    id: 'rank_three_families',
+    result: 'Rank of [A_I; C] with three chord families (Theorem 5.2)',
+    earlier: 'Rank 169 with a trivial kernel, so ghost elimination was "unconditional"',
+    earlierRevision: 'Revision 3.8',
+    current:
+      'Rank 87 (kernel 82). At 34 dB no decoder succeeds with probability above 0.604 on both the test ridge and its ghosts.',
     category: 'corrected',
-    details: 'Revision 5.0 had mistakenly cited K=14. Comprehensive family-subset scan in verify_sec5.py confirms K=16.',
-    verificationEvidence: 'gate_variants() checks all subsets and thresholds; K=16 is unique to the 4-family 0.5 y_ridge gate.',
+    changedIn: 'Revision 3.9',
   },
   {
-    id: 'min_jacobian',
-    claim: 'Minimum diagonal boundary response ∂Λ_bb/∂s_c',
-    statusV40: 'Cited as 1.054×10⁻¹³ S in v5.0 draft',
-    statusV54: '1.908×10⁻²¹ S (at s*) · 1.633×10⁻¹⁶ S (at s=0) · 5.624×10⁻³⁴ S (over 12 test states)',
+    id: 'ghost_separation',
+    result: 'Chord-consistent ghosts of the test ridge (Theorem 5.2(3))',
+    earlier: '100% Monte Carlo success',
+    earlierRevision: 'Revision 3.8',
+    current:
+      'Each ghost differs from the truth at the boundary by 0.5265 σ_Λ at y_base = 10⁻⁶ S (every decoder errs w.p. ≥ 0.396) and 4.46 σ_Λ at 10⁻⁷ S (≥ 0.0128). Ball-arithmetic enclosures: 0.526493 and 0.526535 σ_Λ.',
     category: 'corrected',
-    details: '1.054×10⁻¹³ S was from a withdrawn preliminary draft. Lemma 5.5 strictly proves ∂Λ_bb/∂s_c = w_b^T M_c w_b > 0 at active nodes.',
-    verificationEvidence: 'Complex-step derivative across 24 columns matches formula to rel error < 3.0×10⁻¹⁰.',
+    changedIn: 'Revision 3.9',
   },
   {
-    id: 'ghost_sep_baseline',
-    claim: 'Ghost separation at baseline (y_base = 10⁻⁶ S)',
-    statusV40: 'Claimed 1.2×10⁻¹⁴ σ ("pure numerical noise")',
-    statusV54: '0.5265 σ_Λ (real, measurable, undecodable; P_err ≥ 0.396)',
+    id: 'frechet_check',
+    result: 'Fréchet derivative check (Theorem 5.1)',
+    earlier: 'Finite difference with step 10⁻⁴ agrees to 3.19×10⁻⁷',
+    earlierRevision: 'Revision 3.8',
+    current:
+      'That check gives 2.6×10⁻². Replaced by complex-step verification, which agrees within 10⁻⁹ in all 169 columns.',
     category: 'corrected',
-    details: 'Calling 0.53σ "numerical noise" was wrong in v5.0. 0.5265σ is an exact physical separation; it leads to severe decoder error (P_err ≥ 0.396) because it is below the 34 dB noise floor, not a float cancellation artifact.',
-    verificationEvidence: 'Certified in 256-bit ball arithmetic (python-flint): separation enclosure [0.526501, 0.526505] σ_Λ.',
+    changedIn: 'Revision 3.9',
   },
   {
-    id: 'ghost_sep_design',
-    claim: 'Ghost separation at design point (y_base = 10⁻⁷ S)',
-    statusV40: 'Not computed',
-    statusV54: '4.46 σ_Λ (3 families) · Fully determined (4 families)',
-    category: 'new_in_v54',
-    details: 'Lowering shunt y_base to 10⁻⁷ S amplifies boundary potential by ~8.5×, making the 3-family ghosts resolvable at 4.46σ (ML exact 1973/2000). The 4th family determines the test ridge uniquely.',
-    verificationEvidence: 'Rank(C_K) = 16 = K; nullspace on candidate cells is {0}. Exact recovery 2000/2000 in MC.',
+    id: 'hoti',
+    result: 'Phase at the design value δb = +0.18 (Remark 3.3)',
+    earlier: 'Higher-order topological insulator (HOTI)',
+    earlierRevision: 'Revisions up to 3.8',
+    current:
+      'Trivial atomic phase: the 217-cell flake has 217 states below the gap and none in it. The HOTI designation applies to δb < 0 (21 in-gap states at δb = −0.18).',
+    category: 'corrected',
+    changedIn: 'Revision 3.9',
   },
   {
-    id: 'loop_screening',
-    claim: 'Screening by closed ridge loops (Theorem 5.7)',
-    statusV40: '"Faraday cage" qualitative narrative',
-    statusV54: 'Rigorous: 1.44×10⁻⁸ to 6.27×10⁻⁴ σ_Λ (P_err ≥ 0.4998)',
-    category: 'new_in_v54',
-    details: 'Inside a closed 36-cell ridge loop at depth 2, the 4-family switching component produces boundary signatures separated by at most 6.27×10⁻⁴σ across all 44 placements. Any decoder errs with P ≥ 0.4998.',
-    verificationEvidence: 'Confirmed in 256-bit ball arithmetic for extreme placements (-1, -4) and (-1, -1); rigorous error lower bound Q(d/2) >= 0.4998.',
+    id: 'rank_four_families',
+    result: 'Fourth chord family m − n (Theorem 5.2)',
+    earlier: '—',
+    earlierRevision: '',
+    current:
+      'Rank 112 (kernel 57). With four families the test ridge is determined by its chord sums and recovered in 2000/2000 trials.',
+    category: 'new',
+    changedIn: 'Revision 4.0',
+  },
+  {
+    id: 'gate_k',
+    result: 'Candidate count K of the chord gate',
+    earlier: 'K = 14, and rank [J(s*)_K; w_c C_K] = 14/14',
+    earlierRevision: 'Revision 5.0',
+    current:
+      'K = 16 with four families (17 with three); none of 45 family-subset and threshold variants gives 14. The rank is 16 = K and adds nothing to rank C_K = 16.',
+    category: 'corrected',
+    changedIn: 'Revision 5.1',
+  },
+  {
+    id: 'min_response',
+    result: 'Minimum boundary response ∂Λ_bb/∂s_c (Lemma 5.5)',
+    earlier: '1.054×10⁻¹³ S',
+    earlierRevision: 'Revision 5.0',
+    current:
+      'Not reproduced by any of 28 conventions. Replaced by computed minima: 1.633×10⁻¹⁶ S at s = 0, 1.908×10⁻²¹ S at s*, 5.624×10⁻³⁴ S over 12 test states.',
+    category: 'corrected',
+    changedIn: 'Revision 5.1',
   },
   {
     id: 'data_collapse',
-    claim: 'Boundary Jacobian data collapse (Theorem 5.6)',
-    statusV40: 'Only noted 75 dark nodes',
-    statusV54: 'rank(J) ≤ 45 everywhere; 69 active nodes form 24 identical pairs + 21 singletons',
-    category: 'new_in_v54',
-    details: 'Pairs of perimeter nodes bonded to the same interior node carry mathematically identical data at every state s ∈ [0, 1]^169. Rank cannot exceed 45 regardless of state or interior geometry.',
-    verificationEvidence: 'L_IB columns identical for all 24 pairs; verified across continuous, binary, and random ridge states.',
+    result: 'Boundary data collapse (Theorem 5.6)',
+    earlier: 'Stated as Theorem 5.3',
+    earlierRevision: 'Revision 5.0',
+    current:
+      'rank J(s) ≤ 45 for every state s: the 69 active boundary nodes form 24 pairs bonded to the same interior node and 21 singletons.',
+    category: 'new',
+    changedIn: 'Revision 5.1',
+  },
+  {
+    id: 'loop_screening',
+    result: 'Screening by closed ridge loops (Theorem 5.7)',
+    earlier: 'd_screen = 3.84×10⁻⁶ σ_Λ for a 32-cell loop at depth 4–5; the separation decays in noise units',
+    earlierRevision: 'Revision 5.0',
+    current:
+      'No hexagonal ring has 32 cells. In the 36-cell loop the 44 placements give 1.4445×10⁻⁸ to 6.2732×10⁻⁴ σ_Λ, so every decoder errs w.p. ≥ 0.4998. The separation decays only in siemens.',
+    category: 'corrected',
+    changedIn: 'Revision 5.1',
+  },
+  {
+    id: 'snr',
+    result: 'SNR needed inside a closed loop (Theorem 5.7)',
+    earlier: 'SNR ≥ 125 dB for reliable resolution (no derivation)',
+    earlierRevision: 'Revision 5.0',
+    current:
+      'Error probability ≤ 1% needs at least 111.3 dB for the most separated placement and 204.1 dB for the least separated.',
+    category: 'corrected',
+    changedIn: 'Revision 5.1',
+  },
+  {
+    id: 'monte_carlo',
+    result: 'Recovery statistics for ridge classes (Remark 5.8)',
+    earlier: '99/100 unique ridges and 19,886/20,000 recoveries, with no sampler or code',
+    earlierRevision: 'Revision 5.0',
+    current: 'Replaced by two seeded studies (strokes; connected loop-free ridges), neither of which reproduces both values.',
+    category: 'corrected',
+    changedIn: 'Revision 5.1',
+  },
+  {
+    id: 'material_system',
+    result: 'Material system and wake-up voltage (Section 3.1)',
+    earlier: 'Borax–water-activated cellulose-nanofibre LIG and BaTiO₃ paper: g₁ = 7.227×10⁻³ S, V_wake = 168.6 mV',
+    earlierRevision: 'Revision 5.0',
+    current:
+      'Not adopted. Sections 1–4 keep the Revision 4.0 model: g₁ = 2.168×10⁻² S in every computation, V_wake = 70.2 mV > 50 mV.',
+    category: 'not_adopted',
+    changedIn: 'Revision 5.1',
   },
   {
     id: 'split_chords',
-    claim: 'Per-line interleaved split chords (Theorem 5.11 & Prop 5.12)',
-    statusV40: 'Not in v4.0',
-    statusV54: 'Rank 163 / 169 (mod-2 parity split) → Rank 169 / 169 (mod-3 split at R=8)',
-    category: 'new_in_v54',
-    details: 'Reading lines with alternating parity (k=2) leaves kernel 6. Adding period-3 (k=3) achieves full rank 169/169 at R_hex=8. The kernels ker(C^(2)) and ker(C^(3)) are not nested.',
-    verificationEvidence: 'Translates of dilated component span split kernels; ker C^(2) has 24 non-zero mod-3 sums per translate.',
+    result: 'Split chords C⁽ᵏ⁾ (Theorem 5.11, Proposition 5.12)',
+    earlier:
+      '"Conjugate-basis probes": ranks 112, 163, 169; nested kernels; three families including m − n necessary and sufficient; condition numbers 3756 and 350',
+    earlierRevision: 'Separately circulated draft (labelled 5.1)',
+    current:
+      'Ranks 112, 163 and 169 confirmed. The kernels for k = 2 and 3 are not nested. "Three families including m − n" holds at R_hex = 8 only. The condition numbers are not reproduced (43,172 for [A_I; C⁽³⁾] at the design point).',
+    category: 'corrected',
+    changedIn: 'Revision 5.2',
   },
   {
-    id: 'asymptotic_obstruction',
-    claim: 'Asymptotic limit of fixed-order split chords (Theorem 5.14)',
-    statusV40: 'Not in v4.0',
-    statusV54: 'No fixed k works for all R; k=3 fails at R ≥ 10 (deficient by 1..3 at R=10, 25+ at R=11)',
-    category: 'new_in_v54',
-    details: 'Kernel dimension T_k(R) = 3R² - (10k+3)R + 8k² + 5k + 1 grows as Θ(R²), whereas distinct boundary data d(R) = 6R - 3 grows only as Θ(R). Deficiency is inevitable for any fixed k.',
-    verificationEvidence: 'Exact ranks for R = 2..9 and 11, range 268..270 at R = 10 (mod-p lower bounds); d(R) = 6R − 3 checked for R = 2..15.',
+    id: 'asymptotic',
+    result: 'Fixed split order on growing arrays (Theorem 5.14)',
+    earlier: '—',
+    earlierRevision: '',
+    current:
+      'No fixed k works for every R_hex: k = 3 has full rank for R ≤ 9 and is deficient for every R ≥ 10 (268–270 of 271 at R = 10, 306 of 331 at R = 11).',
+    category: 'new',
+    changedIn: 'Revision 5.2',
   },
   {
-    id: 'cross_ratio_witness',
-    claim: 'Convex ridge identifiability (Proposition 5.18)',
-    statusV40: 'Not in v4.0',
-    statusV54: 'Cross-ratio 2.0 excluded by Gardner-Gritzmann; explicit 8-cell convex mirror pair',
-    category: 'new_in_v54',
-    details: 'Slopes {-1, 0, 1, ∞} have cross-ratio 2.0. The obstruction is realized by two convex 8-cell lattice parallelograms sharing identical 4-family chord data at 102 interior placements.',
-    verificationEvidence: 'Lattice closure conv(plus + I) = conv(minus + I); chord line sums match identically in all 4 families.',
+    id: 'convex',
+    result: 'Convex ridges and the cross-ratio criterion (Proposition 5.18)',
+    earlier: '—',
+    earlierRevision: '',
+    current:
+      'The four chord slopes have cross ratio 2, which Gardner–Gritzmann exclude; two convex 8-cell parallelograms have identical chord data in all four families, at 102 placements.',
+    category: 'new',
+    changedIn: 'Revision 5.3',
   },
   {
     id: 'critical_radius',
-    claim: 'Critical radius for split order k (Corollary 5.15)',
-    statusV40: 'Not in v4.0',
-    statusV54: 'R_crit(k) = ⌊(10k + 9 + √(4k² + 120k + 33))/6⌋ + 1: 6, 8, 10, 13, 15 for k = 1..5; = 2k + 7 exactly when k ≥ 58',
-    category: 'new_in_v55',
-    details: 'Closed form for the radius at which T_k(R) exceeds d(R) = 6R − 3, so that [A_I; C^(k)] is rank-deficient by Theorem 5.14. For k = 1 and k = 3 it matches the observed onsets (R = 6 and R = 10); for other k it is a bound. Using only d(R) ≤ 18R, deficiency holds for R ≥ 16 when k = 3.',
-    verificationEvidence: 'verify_rcrit() in biokagome_v55_verify.py: k = 1..5 table, brute-force agreement with the definition for k = 1..500, asymptote check.',
+    result: 'Critical radius for split order k (Corollary 5.15)',
+    earlier: '—',
+    earlierRevision: '',
+    current:
+      'If d(R) = 6R − 3, deficient for R ≥ ⌊(10k + 9 + √(4k² + 120k + 33))/6⌋ + 1: 6, 8, 10, 13, 15 for k = 1..5, and exactly 2k + 7 when k ≥ 58. Using only d(R) ≤ 18R: R ≥ 16 for k = 3.',
+    category: 'new',
+    changedIn: 'Revision 5.5',
   },
   {
-    id: 'scope_prior_art',
-    claim: 'Scope and prior-art grounding (Section 1.1)',
-    statusV40: 'Not in v4.0',
-    statusV54: 'Section 5 theorems are substrate-agnostic; switching components are Hajdu–Tijdeman / Ryser, cross-ratio criterion is Gardner–Gritzmann',
-    category: 'new_in_v55',
-    details: 'The identifiability results hold for any passive resistor-shunt network with this Breathing Kagome topology, independent of the illustrative material parameters of Sections 2–4. Contributions specific to this paper: T_k(R) on the hexagonal domain, rank J ≤ 45, the fixed-k breakdown, and the explicit cross-ratio-2 witness at R_hex = 8.',
-    verificationEvidence: 'Statement of scope; no new computation.',
+    id: 'scope',
+    result: 'Scope and prior art (Section 1.1)',
+    earlier: '—',
+    earlierRevision: '',
+    current:
+      'The Section 5 results hold for any passive resistor-shunt network with this topology and conductance regime. Switching components follow Hajdu–Tijdeman (after Ryser); the cross-ratio criterion is Gardner–Gritzmann.',
+    category: 'new',
+    changedIn: 'Revision 5.5',
   },
 ];

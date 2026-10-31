@@ -1,6 +1,6 @@
 {
   "name": "Kagome Boundary Lab",
-  "description": "Passive tomography on a breathing Kagome lattice with borax-activated cellulose LIG and cellulose-BaTiO3 proxy (Appendix A execution and verification).",
+  "description": "Interactive companion to the Bio-Kagome paper (Revision 5.5): identifiability ranks, split-chord limits, revision history, the exact Bloch spectrum and the piezo wake-up of Section 3.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

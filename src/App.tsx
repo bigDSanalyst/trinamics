@@ -1,123 +1,103 @@
 import React, { useState, useMemo } from 'react';
-import { LITERATURE_POINT, MaterialsParams } from './types/kagome';
+import { PAPER_DEFAULTS, MaterialsParams } from './types/kagome';
 import { computePhysics } from './utils/physics';
-import { generateKagomeLattice } from './utils/kagomeLattice';
-import { executeTomographySuite } from './utils/tomography';
-import { VerdictBanner } from './components/VerdictBanner';
-import { LatticeVisualizer } from './components/LatticeVisualizer';
-import { DepthSensitivityChart } from './components/DepthSensitivityChart';
 import { BandStructureChart } from './components/BandStructureChart';
 import { MaterialsPhysicsBench } from './components/MaterialsPhysicsBench';
-import { AuditReportTable } from './components/AuditReportTable';
-import { SuiteConsole } from './components/SuiteConsole';
 import { V54Identifiability } from './components/V54Identifiability';
 import { V54AsymptoticLimit } from './components/V54AsymptoticLimit';
 import { V54Comparison } from './components/V54Comparison';
-import { 
-  Activity, 
-  Layers, 
-  Cpu, 
-  ShieldCheck, 
-  FileCheck2, 
-  RotateCcw,
-  Sparkles,
-  Download,
-  TrendingUp,
-  Scale
-} from 'lucide-react';
+import { Layers, Cpu, RotateCcw, Sparkles, Download, TrendingUp, Scale } from 'lucide-react';
 
-export type AppTab =
-  | 'v54_identifiability'
-  | 'v54_asymptotic'
-  | 'v54_comparison'
-  | 'tomography'
-  | 'band'
-  | 'materials'
-  | 'audit'
-  | 'console';
+export type AppTab = 'identifiability' | 'asymptotic' | 'revisions' | 'band' | 'wake';
+
+const TABS: { id: AppTab; label: string; icon: React.ElementType; group: 'tomography' | 'physics'; active: string }[] = [
+  { id: 'identifiability', label: 'Identifiability', icon: Sparkles, group: 'tomography', active: 'bg-emerald-950 text-emerald-200 border-emerald-700' },
+  { id: 'asymptotic', label: 'Asymptotic Limit', icon: TrendingUp, group: 'tomography', active: 'bg-amber-950 text-amber-200 border-amber-700' },
+  { id: 'revisions', label: 'Revision History', icon: Scale, group: 'tomography', active: 'bg-cyan-950 text-cyan-200 border-cyan-700' },
+  { id: 'band', label: 'Bloch Spectrum (§3.2)', icon: Layers, group: 'physics', active: 'bg-indigo-950 text-indigo-200 border-indigo-700' },
+  { id: 'wake', label: 'Piezo Wake-Up (§3.1)', icon: Cpu, group: 'physics', active: 'bg-zinc-800 text-zinc-100 border-zinc-600' },
+];
 
 export default function App() {
-  // Primary state for materials & physical parameters
-  const [params, setParams] = useState<MaterialsParams>(LITERATURE_POINT);
-  const [activeTab, setActiveTab] = useState<AppTab>('v54_identifiability');
-  const [selectedAuditId, setSelectedAuditId] = useState<string | null>(null);
+  const [params, setParams] = useState<MaterialsParams>(PAPER_DEFAULTS);
+  const [activeTab, setActiveTab] = useState<AppTab>('identifiability');
 
-  // Derived physics
   const derived = useMemo(() => computePhysics(params), [params]);
 
-  // Kagome lattice geometry
-  const latticeData = useMemo(() => generateKagomeLattice(), []);
+  const resetToPaper = () => setParams(PAPER_DEFAULTS);
 
-  // Tomography suite computation
-  const suiteResult = useMemo(
-    () => executeTomographySuite(params.snrDb, params.barrierG2),
-    [params.snrDb, params.barrierG2]
-  );
-
-  const resetToLiterature = () => {
-    setParams(LITERATURE_POINT);
-    setSelectedAuditId(null);
-  };
-
-  const handleSelectAudit = (id: string) => {
-    setSelectedAuditId(id);
-    setActiveTab('audit');
-  };
-
-  const exportCertificate = () => {
+  const exportSummary = () => {
+    const t1 = 1 + params.breathingDelta;
+    const t2 = 1 - params.breathingDelta;
     const content = `========================================================================
-HIERARCHICAL BIO-KAGOME METAMATERIALS & BOUNDARY LAB — REVISION 5.5
-Passive Tomography & Materials Transduction Verification Suite
+KAGOME BOUNDARY LAB — PAPER REVISION 5.5 SUMMARY
+Hierarchical Bio-Kagome Solid-State Metamaterials
 Nicholas Clifford Maino III · Melbourne · 31 October 2026
 ========================================================================
 
-1. REVISION 5.5 VERIFICATION SUMMARY
+1. IDENTIFIABILITY AT R_hex = 8 (N_I = 169), SECTION 5
 ------------------------------------------------------------------------
-[EXACT RANK PROGRESSION at R_hex = 8, N_I = 169]
-  - Stage 1 (A_I boundary only): rank 45, kernel 124 (out of 169)
-  - Stage 2 (+ 3 chord families): rank 87, kernel 82
-  - Stage 3 (+ 4 chord families): rank 112, kernel 57
-  - Stage 4 (+ mod-2 parity split): rank 163, kernel 6 (resolves hexadecapole)
-  - Stage 5 (+ mod-3 period split): rank 169, kernel 0 (full rank at R=8)
+  - A_I (boundary diagonal only):     rank 45,  kernel 124
+  - [A_I; C], three chord families:   rank 87,  kernel 82
+  - [A_I; C], four chord families:    rank 112, kernel 57
+  - [A_I; C^(2)], parity split:       rank 163, kernel 6
+  - [A_I; C^(3)], mod-3 split:        rank 169, kernel 0
 
-[ASYMPTOTIC OBSTRUCTION (Theorem 5.14)]
-  - No fixed split order works for all R_hex.
-  - For k=3: full rank for R <= 9; provably deficient for R >= 10.
-  - Growth disparity: T_k(R) = Θ(R²) while boundary data d(R) = Θ(R).
-
-[CRITICAL RADIUS (Corollary 5.15, new in Revision 5.5)]
-  - If d(R) = 6R - 3: deficient for R >= R_crit(k) = floor((10k + 9 + sqrt(4k² + 120k + 33)) / 6) + 1.
-  - R_crit = 6, 8, 10, 13, 15 for k = 1..5; R_crit(k) = 2k + 7 exactly when k >= 58.
-  - Using only d(R) <= 18R: deficient for R >= floor((10k + 21 + sqrt(4k² + 360k + 429)) / 6) + 1 (R >= 16 for k = 3).
-
-[SCREENING & GHOST SEPARATION]
-  - Closed 36-cell loop screens switching components to <= 6.27e-4 σ (P_err >= 0.4998).
-  - Isolated ghost separation: 0.5265 σ (baseline y_base=1e-6 S) · 4.46 σ (design y_base=1e-7 S).
-  - Cross-ratio 2.0 excluded by Gardner-Gritzmann; 8-cell convex mirror pair identified.
-
-2. MATERIALS TRANSFORMATION ANCHORS
+2. GHOSTS AND SCREENING
 ------------------------------------------------------------------------
-- Sheet resistance (Rs): ${params.sheetResistance} Ω/sq (strut aspect 8 / 20.5)
-- Conductance g1: ${derived.g1.toExponential(4)} S
-- Effective permittivity (εeff): ${derived.epsEff.toFixed(3)}
-- Piezo voltage constant (g33): ${derived.g33.toFixed(2)} mV·m/N
-- Open-circuit wake: ${derived.wakeVoltageMv.toFixed(1)} mV (${derived.comparatorRatio.toFixed(2)}× a 50 mV comparator)
+  - Test-ridge ghosts (three families): 0.5265 sigma at y_base = 1e-6 S (P_err >= 0.396),
+    4.46 sigma at y_base = 1e-7 S (P_err >= 0.0128).
+  - Closed 36-cell ridge loop: 1.4445e-8 to 6.2732e-4 sigma over 44 placements (P_err >= 0.4998).
+  - Chord slopes have cross ratio 2 (excluded by Gardner-Gritzmann); two convex 8-cell
+    parallelograms share all four-family chord data at 102 placements.
+
+3. SPLIT-CHORD LIMIT (THEOREM 5.14, COROLLARY 5.15)
+------------------------------------------------------------------------
+  - k = 3: full rank for R <= 9, deficient for every R >= 10.
+  - If d(R) = 6R - 3: deficient for R >= floor((10k + 9 + sqrt(4k^2 + 120k + 33)) / 6) + 1
+    = 6, 8, 10, 13, 15 for k = 1..5; equal to 2k + 7 exactly when k >= 58.
+  - Using only d(R) <= 18R: deficient for R >= floor((10k + 21 + sqrt(4k^2 + 360k + 429)) / 6) + 1
+    (R >= 16 for k = 3).
+
+4. SECTION 3 AT THE CURRENT APP SETTINGS
+------------------------------------------------------------------------
+  - Bloch spectrum: delta_b = ${params.breathingDelta.toFixed(2)}, t1 = ${t1.toFixed(2)}, t2 = ${t2.toFixed(2)},
+    gap at K = ${(3 * Math.abs(t1 - t2)).toFixed(3)}, flat band at t1 + t2 = ${(t1 + t2).toFixed(3)}.
+  - Wake-up: phi_p = ${params.phiP.toFixed(2)}, d33,eff = ${(params.d33Eff * 1e12).toFixed(1)} pC/N, F_z = ${params.forceZ.toFixed(2)} N
+    -> eps_eff = ${derived.epsEff.toFixed(4)}, g33 = ${derived.g33.toFixed(2)} mV m/N, V_wake = ${derived.wakeVoltageMv.toFixed(2)} mV
+    (threshold ${params.thresholdMv} mV). Paper values: 5.58, 40.5 mV m/N, 70.2 mV.
 ========================================================================`;
 
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `BioKagome_v55_Verification_Certificate.txt`;
+    link.download = 'KagomeBoundaryLab_v55_summary.txt';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
 
+  const tabButton = (t: (typeof TABS)[number]) => {
+    const Icon = t.icon;
+    return (
+      <button
+        key={t.id}
+        onClick={() => setActiveTab(t.id)}
+        className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap border ${
+          activeTab === t.id ? `${t.active} shadow-sm` : 'border-transparent text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900'
+        }`}
+      >
+        <Icon className="w-3.5 h-3.5" />
+        {t.label}
+      </button>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
-      {/* Top Navigation & Masthead */}
+      {/* Masthead */}
       <header className="border-b border-zinc-800/80 bg-zinc-950/80 sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
           <div>
@@ -125,346 +105,67 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
               <span className="font-mono text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold tracking-wide">
                 PAPER REVISION 5.5
               </span>
-              <h1 className="text-lg font-bold text-zinc-100 tracking-tight">
-                Kagome Boundary Lab
-              </h1>
+              <h1 className="text-lg font-bold text-zinc-100 tracking-tight">Kagome Boundary Lab</h1>
             </div>
             <p className="text-xs text-zinc-400 mt-0.5">
-              Hierarchical solid-state metamaterials, multi-tier discrete tomography & exact rank resolution
+              Interactive companion to the paper: identifiability of boundary tomography, split-chord limits and Section 3 physics
             </p>
           </div>
 
-          {/* Author Byline & Quick Actions */}
           <div className="flex flex-wrap items-center gap-3">
             <div className="text-right hidden sm:block">
-              <div className="text-xs font-medium text-zinc-300">
-                Nicholas Clifford Maino III
-              </div>
-              <div className="text-[11px] text-zinc-500 font-mono">
-                Melbourne · Revision 5.5 · 31 October 2026
-              </div>
+              <div className="text-xs font-medium text-zinc-300">Nicholas Clifford Maino III</div>
+              <div className="text-[11px] text-zinc-500 font-mono">Melbourne · Revision 5.5 · 31 October 2026</div>
             </div>
 
             <div className="flex items-center gap-2 border-l border-zinc-800 pl-3">
               <button
-                onClick={resetToLiterature}
+                onClick={resetToPaper}
                 className="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100 transition-colors flex items-center gap-1.5"
-                title="Reset parameters to manuscript literature point"
+                title="Reset the Section 3 sliders to the paper's values"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span className="hidden md:inline">Reset Lit. Point</span>
+                <span className="hidden md:inline">Reset to paper values</span>
               </button>
-
               <button
-                onClick={exportCertificate}
+                onClick={exportSummary}
                 className="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-300 hover:bg-cyan-900/60 transition-colors flex items-center gap-1.5"
-                title="Export v5.5 verification audit certificate"
+                title="Download a text summary of the Revision 5.5 results"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span className="hidden md:inline">Export Audit</span>
+                <span className="hidden md:inline">Export summary</span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Navigation Tabs Bar */}
+        {/* Tabs */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-1 overflow-x-auto border-t border-zinc-800/60 pt-1 pb-1">
-          {/* v5.4 Current Suite Tabs */}
-          <button
-            onClick={() => setActiveTab('v54_identifiability')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'v54_identifiability'
-                ? 'bg-emerald-950 text-emerald-200 shadow-sm border border-emerald-700'
-                : 'text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-            v5.5 Identifiability
-          </button>
-
-          <button
-            onClick={() => setActiveTab('v54_asymptotic')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'v54_asymptotic'
-                ? 'bg-amber-950 text-amber-200 shadow-sm border border-amber-700'
-                : 'text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900'
-            }`}
-          >
-            <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
-            v5.5 Asymptotic Limit
-          </button>
-
-          <button
-            onClick={() => setActiveTab('v54_comparison')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'v54_comparison'
-                ? 'bg-cyan-950 text-cyan-200 shadow-sm border border-cyan-700'
-                : 'text-zinc-300 hover:text-zinc-100 hover:bg-zinc-900'
-            }`}
-          >
-            <Scale className="w-3.5 h-3.5 text-cyan-400" />
-            v5.5 vs v4.0
-          </button>
-
-          <div className="h-4 w-px bg-zinc-800 mx-1.5 shrink-0" />
-
-          {/* v4.0 Historical Baseline / Archaeology Tabs */}
-          <button
-            onClick={() => setActiveTab('tomography')}
-            className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'tomography'
-                ? 'bg-zinc-800 text-zinc-100 shadow-sm border border-zinc-700'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
-            }`}
-          >
-            <Activity className="w-3.5 h-3.5 text-cyan-400" />
-            Tomography & Lattice (v4.0)
-          </button>
-
-          <button
-            onClick={() => setActiveTab('band')}
-            className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'band'
-                ? 'bg-zinc-800 text-zinc-100 shadow-sm border border-zinc-700'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
-            }`}
-          >
-            <Layers className="w-3.5 h-3.5 text-indigo-400" />
-            Band Structure & Topology (v4.0)
-          </button>
-
-          <button
-            onClick={() => setActiveTab('materials')}
-            className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'materials'
-                ? 'bg-zinc-800 text-zinc-100 shadow-sm border border-zinc-700'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
-            }`}
-          >
-            <Cpu className="w-3.5 h-3.5 text-amber-400" />
-            Materials & Wake Bench (v4.0)
-          </button>
-
-          <button
-            onClick={() => setActiveTab('audit')}
-            className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'audit'
-                ? 'bg-zinc-800 text-zinc-100 shadow-sm border border-zinc-700'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
-            }`}
-          >
-            <FileCheck2 className="w-3.5 h-3.5 text-emerald-400" />
-            v4.0 Audit
-          </button>
-
-          <button
-            onClick={() => setActiveTab('console')}
-            className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'console'
-                ? 'bg-zinc-800 text-zinc-100 shadow-sm border border-zinc-700'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
-            }`}
-          >
-            <ShieldCheck className="w-3.5 h-3.5 text-yellow-400" />
-            Suite v4.0 Console
-          </button>
+          {TABS.filter((t) => t.group === 'tomography').map(tabButton)}
+          <div className="w-px h-5 bg-zinc-800 mx-2 shrink-0" />
+          {TABS.filter((t) => t.group === 'physics').map(tabButton)}
         </div>
       </header>
 
-      {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full flex flex-col space-y-6">
-        {/* Verification Verdicts */}
-        <VerdictBanner onSelectAudit={handleSelectAudit} />
-
-        {/* NEW v5.4 Tab 1: Identifiability */}
-        {activeTab === 'v54_identifiability' && (
-          <V54Identifiability />
-        )}
-
-        {/* NEW v5.4 Tab 2: Asymptotic Limit */}
-        {activeTab === 'v54_asymptotic' && (
-          <V54AsymptoticLimit />
-        )}
-
-        {/* NEW v5.4 Tab 3: v5.4 vs v4.0 Comparative Audit */}
-        {activeTab === 'v54_comparison' && (
-          <V54Comparison />
-        )}
-
-        {/* v4.0 Tab 1: Tomography & Lattice */}
-        {activeTab === 'tomography' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-            <LatticeVisualizer
-              cells={latticeData.cells}
-              boundaryNodes={latticeData.boundaryNodes}
-              truthCellIds={latticeData.truthCellIds}
-              ghost1CellIds={latticeData.ghost1CellIds}
-              ghost2CellIds={latticeData.ghost2CellIds}
-              snrDb={params.snrDb}
-              barrierG2={params.barrierG2}
-            />
-
-            <DepthSensitivityChart
-              sensitivities={suiteResult.depthSensitivities}
-              snrDb={params.snrDb}
-              onSnrChange={(snr) => setParams({ ...params, snrDb: snr })}
-              barrierG2={params.barrierG2}
-              onBarrierChange={(g2) => setParams({ ...params, barrierG2: g2 })}
-              ghostSeparationSigma={suiteResult.ghost1SeparationSigma}
-              executionTimeMs={suiteResult.executionTimeMs}
-            />
-          </div>
-        )}
-
-        {/* v4.0 Tab 2: Band Structure & Topology */}
+        {activeTab === 'identifiability' && <V54Identifiability />}
+        {activeTab === 'asymptotic' && <V54AsymptoticLimit />}
+        {activeTab === 'revisions' && <V54Comparison />}
         {activeTab === 'band' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-            <BandStructureChart
-              breathingDelta={params.breathingDelta}
-              onDeltaChange={(delta) => setParams({ ...params, breathingDelta: delta })}
-            />
-
-            <div className="bg-zinc-900/70 border border-zinc-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
-              <div>
-                <h3 className="text-base font-semibold text-zinc-100 mb-2">
-                  Topological Phase Diagnostics
-                </h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  In a breathing Kagome lattice, the ratio between intra-cell hopping <span className="font-mono text-zinc-200">t₁ = 1 - δb</span> and inter-cell hopping <span className="font-mono text-zinc-200">t₂ = 1 + δb</span> determines the quadrupole polarization and higher-order topological insulator (HOTI) corner state emergence.
-                </p>
-              </div>
-
-              {/* Status Box */}
-              <div className="p-4 bg-zinc-950 rounded-xl border border-zinc-800 space-y-3 font-mono text-xs">
-                <div className="flex justify-between items-center pb-2 border-b border-zinc-800">
-                  <span className="text-zinc-400">Breathing factor δb:</span>
-                  <span className="text-indigo-400 font-bold">
-                    {params.breathingDelta > 0 ? `+${params.breathingDelta.toFixed(2)}` : params.breathingDelta.toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b border-zinc-800">
-                  <span className="text-zinc-400">Dirac gap at K:</span>
-                  <span className="text-amber-400 font-bold">
-                    {derived.diracGap.toFixed(3)} (3|t₁ - t₂|)
-                  </span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b border-zinc-800">
-                  <span className="text-zinc-400">Flat band position:</span>
-                  <span className="text-emerald-400 font-bold">
-                    {derived.flatBandEnergy.toFixed(3)} (t₁ + t₂)
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-zinc-400">Wannier Center Location:</span>
-                  <span className={params.breathingDelta > 0 ? 'text-emerald-300 font-bold' : 'text-indigo-300 font-bold'}>
-                    {params.breathingDelta > 0 ? 'Inside unit cell (Trivial)' : 'At boundary edges (HOTI)'}
-                  </span>
-                </div>
-              </div>
-
-              {/* CLS Explanation */}
-              <div className="p-3 bg-emerald-950/20 border border-emerald-900/40 rounded-xl text-xs text-zinc-300 space-y-1">
-                <div className="font-semibold text-emerald-300 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Compact Localized State (CLS) Plaquette Proof
-                </div>
-                <p className="text-zinc-400 leading-relaxed text-[11px]">
-                  Setting wavefunctions with alternating signs (+1, -1, +1, -1, +1, -1) around any hexagonal star plaquette produces exact destructive interference on all outgoing legs. Numerical residual on the radius-3 flake is <span className="font-mono text-emerald-300">&lt; 10⁻¹²</span>.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* v4.0 Tab 3: Materials & Wake Bench */}
-        {activeTab === 'materials' && (
-          <MaterialsPhysicsBench
-            params={params}
-            derived={derived}
-            onChange={setParams}
-            onReset={resetToLiterature}
+          <BandStructureChart
+            breathingDelta={params.breathingDelta}
+            onDeltaChange={(delta) => setParams({ ...params, breathingDelta: delta })}
           />
         )}
-
-        {/* v4.0 Tab 4: v4.0 Audit (Retitled) */}
-        {activeTab === 'audit' && (
-          <AuditReportTable
-            selectedAuditId={selectedAuditId}
-            onSelectAudit={setSelectedAuditId}
-          />
-        )}
-
-        {/* v4.0 Tab 5: Live Suite v4.0 Console */}
-        {activeTab === 'console' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-            <div className="lg:col-span-2">
-              <SuiteConsole
-                suiteResult={suiteResult}
-                derived={derived}
-                snrDb={params.snrDb}
-                barrierG2={params.barrierG2}
-              />
-            </div>
-
-            {/* Quick Metrics Summary Sidebar */}
-            <div className="bg-zinc-900/70 border border-zinc-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
-              <div>
-                <h3 className="text-sm font-semibold text-zinc-200 uppercase tracking-wider mb-2">
-                  Appendix A Benchmark Checklist
-                </h3>
-                <div className="space-y-2 text-xs font-mono">
-                  <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800/80 flex justify-between">
-                    <span className="text-zinc-400">Dark Nodes:</span>
-                    <span className="text-zinc-100 font-bold">75 / 144</span>
-                  </div>
-                  <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800/80 flex justify-between">
-                    <span className="text-zinc-400">rank(A_I):</span>
-                    <span className="text-zinc-100 font-bold">45</span>
-                  </div>
-                  <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800/80 flex justify-between">
-                    <span className="text-zinc-400">rank(C₃):</span>
-                    <span className="text-zinc-100 font-bold">42 / 45</span>
-                  </div>
-                  <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800/80 flex justify-between">
-                    <span className="text-zinc-400">rank(C₄):</span>
-                    <span className="text-zinc-100 font-bold">67 / 74</span>
-                  </div>
-                  <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800/80 flex justify-between">
-                    <span className="text-zinc-400">3-Chord Joint Rank:</span>
-                    <span className="text-emerald-400 font-bold">87 (ker 82)</span>
-                  </div>
-                  <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800/80 flex justify-between">
-                    <span className="text-zinc-400">4-Chord Joint Rank:</span>
-                    <span className="text-emerald-400 font-bold">112 (ker 57)</span>
-                  </div>
-                  <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800/80 flex justify-between">
-                    <span className="text-zinc-400">Fréchet Step 10⁻⁹:</span>
-                    <span className="text-cyan-300 font-bold">6.329×10⁻⁴</span>
-                  </div>
-                  <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800/80 flex justify-between">
-                    <span className="text-zinc-400">Wake Voltage:</span>
-                    <span className="text-amber-400 font-bold">168.4 mV</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-3 bg-zinc-950 rounded-lg border border-zinc-800 text-[11px] text-zinc-400">
-                The bench preserves the <strong className="text-zinc-200">v4.0 historical baseline</strong> while linking to the multi-tier resolution in Revision 5.5.
-              </div>
-            </div>
-          </div>
+        {activeTab === 'wake' && (
+          <MaterialsPhysicsBench params={params} derived={derived} onChange={setParams} onReset={resetToPaper} />
         )}
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-zinc-800/60 py-4 bg-zinc-950/60 text-xs text-zinc-500 font-mono">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2">
-          <div>
-            Bio-Kagome Metamaterials & Boundary Lab · Revision 5.5 (supersedes v4.0 and v5.0–5.4)
-          </div>
-          <div>
-            Nicholas Clifford Maino III · Melbourne · 31 October 2026
-          </div>
+          <div>Bio-Kagome Metamaterials &amp; Boundary Lab · Revision 5.5 (supersedes v4.0 and v5.0–5.4)</div>
+          <div>Nicholas Clifford Maino III · Melbourne · 31 October 2026</div>
         </div>
       </footer>
     </div>

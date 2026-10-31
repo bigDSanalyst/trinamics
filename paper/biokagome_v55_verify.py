@@ -345,7 +345,7 @@ def verify_frechet(net, L0, G0, A):
         nz = A[:, pos] != 0
         assert np.all(d[~nz] == 0)
         worst = max(worst, float(np.max(np.abs(d[nz] - A[nz, pos])/A[nz, pos])))
-    assert worst < 1e-8
+    assert worst < 1e-9                             # bound stated in Sec. 5.2 (holds on both reference machines)
     rng = np.random.default_rng(3)                  # exact second-order remainder identity (Thm 5.1(3))
     dy = rng.uniform(0, 1e-7, net.N_I)
     dY = np.diag(np.repeat(dy/3, 3))
@@ -356,7 +356,7 @@ def verify_frechet(net, L0, G0, A):
     ident = float(np.linalg.norm(dLam - (G0.T @ dY @ G0 + R2))/np.linalg.norm(dLam))
     ev = np.linalg.eigvalsh(LII)
     bnd = np.linalg.norm(G0, 2)**2*(dy.max()/3)**2/ev[0]
-    assert ident < 1e-6 and np.linalg.norm(R2, 2) <= bnd
+    assert ident < 2e-8 and np.linalg.norm(R2, 2) <= bnd   # 2e-8: bound stated in Sec. 5.2
     print(f"[Sec.5] y_base={s.y_base:.0e}: Thm5.1 complex-step max rel. err over {net.N_I} columns <= {up(worst, 2)}; "
           f"remainder identity residual <= {up(ident, 2)}; ||R2|| = {np.linalg.norm(R2, 2):.2e} <= {bnd:.2e}")
     print(f"[Sec.5] y_base={s.y_base:.0e}: lambda_min(L_II) = {ev[0]:.3e} S, cond(L_II) = {ev[-1]/ev[0]:.2e}; "
@@ -825,7 +825,7 @@ def verify_monotonicity(lin):
             d = np.diag(net.schur(net.laplacian(xc))).imag/1e-30
             nz = D[:, pos] != 0
             worst = max(worst, float(np.max(np.abs(d[nz] - D[nz, pos])/np.abs(D[nz, pos]))))
-    assert worst < 1e-6
+    assert worst < 1e-9                             # bound stated after Lemma 5.5
     print(f"[Sec.5.4] Lemma 5.5 formula w_b^T M_c w_b vs complex-step derivative (24 columns, 2 states): "
           f"max rel. error <= {up(worst, 2)}")
     claimed, tried = 1.054e-13, []
@@ -1229,6 +1229,8 @@ def verify_split_conditioning():
         Mn = M[np.linalg.norm(M, axis=1) > 0]
         sr = sv(Mn/np.linalg.norm(Mn, axis=1)[:, None]); scol = sv(M/np.linalg.norm(M, axis=0))
         _, _, Vt = np.linalg.svd(C3.astype(float)); sa = sv(A @ Vt[153:].T)
+        if yb == 1e-6:
+            assert s2[162] < 1e-14                  # Remark 5.16: sigma_163 at round-off level for y_base = 1e-6 S
         print(f"[Sec.5.5] Rem 5.16 y_base={yb:g}: [A_I; C^(2)] sigma_1 = {s2[0]:.3e}, sigma_163 = {s2[162]:.3e}, "
               f"sigma_164 = {s2[163]:.3e}; [A_I; C^(3)] sigma_max = {s3[0]:.3e}, sigma_min = {s3[-1]:.3e}, "
               f"kappa = {s3[0]/s3[-1]:.0f} (column-equilibrated {scol[0]/scol[-1]:.0f}, row-equilibrated {sr[0]/sr[-1]:.0f}); "
