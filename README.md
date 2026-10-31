@@ -6,11 +6,11 @@ grids, with an accompanying inverse-problems paper.
 ## Contents
 
 - `src/` — Vite + React viewer (audit table, lattice, band structure)
-- `paper/` — v5.4 manuscript, verification suite, supplementary checks
+- `paper/` — v5.5 manuscript, verification suite, supplementary checks
 
 ## Paper
 
-**Hierarchical Bio-Kagome Solid-State Metamaterials** (Revision 5.4)
+**Hierarchical Bio-Kagome Solid-State Metamaterials** (Revision 5.5)
 
 Proves, on the Kagome flake at R_hex = 8 (169 interior cells):
 
@@ -19,11 +19,13 @@ Proves, on the Kagome flake at R_hex = 8 (169 interior cells):
 - kernel of C^(k) contains T_k(R) = 3R^2 - (10k+3)R + 8k^2 + 5k + 1 translates
   of the k-dilated switching component (Thm 5.11)
 - no fixed k works asymptotically: k = 3 fails at R >= 10 (Thm 5.14)
+- closed-form onset R_crit(k) = floor((10k+9+sqrt(4k^2+120k+33))/6) + 1
+  when d(R) = 6R-3 (Cor 5.15); equals 2k+7 for k >= 58
 - closed ridge loops screen to <= 6.27e-4 noise std, forcing P_err >= 0.4998
   (Thm 5.7)
 - cross-ratio 2 excluded by Gardner-Gritzmann; the obstruction is realized by an
   explicit 8-cell convex mirror pair with identical chord data at 102 placements
-  (Prop. 5.17)
+  (Prop. 5.18)
 
 Does **not** claim:
 
@@ -40,7 +42,7 @@ revisions are in the paper's Revision Notes.
 
     cd paper
     pip install numpy
-    python biokagome_v54_verify.py    # ~213 s
+    python biokagome_v55_verify.py    # ~213 s
 
 Expected last line: [done] N s.
 
@@ -72,6 +74,6 @@ src/utils/tomography_v54.ts.
                 and Identifiability of Three- and Four-Chord Schur-Complement
                 Boundary Tomography},
       year   = {2026},
-      note   = {Revision 5.4},
+      note   = {Revision 5.5},
       url    = {https://github.com/bigDSanalyst/trinamics}
     }

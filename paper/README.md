@@ -1,9 +1,9 @@
-# Bio-Kagome v5.4 — paper assets
+# Bio-Kagome v5.5 — paper assets
 
 Verify with:
 
     pip install numpy
-    python biokagome_v54_verify.py    # ~213 s, ends with [done] N s
+    python biokagome_v55_verify.py    # ~213 s, ends with [done] N s
 
 Supplementary ball-arithmetic checks (need python-flint):
 
@@ -13,7 +13,7 @@ Supplementary ball-arithmetic checks (need python-flint):
 Both scripts must sit in the same directory — the second imports from the first.
 
 Every printed line has a section tag ([Sec.5], [Sec.5.4], [Sec.5.5], [Sec.5.6])
-matching a section of biokagome_v54.tex.
+matching a section of biokagome_v55.tex.
 
 ## Scope
 
@@ -31,7 +31,7 @@ of Theorem 5.11(2) are open problems, not theorems.
 ## Credit
 
 Switching-component analysis (Theorems 5.2(5), 5.11(1)) is an instance of
-Hajdu–Tijdeman discrete tomography. Cross-ratio criterion (Prop. 5.17) is
+Hajdu–Tijdeman discrete tomography. Cross-ratio criterion (Prop. 5.18) is
 Gardner–Gritzmann 1997. Lemma 5.5 without strictness is Rayleigh's monotonicity
 law. Specific contributions: count T_k(R) on the hexagonal domain, the data
 collapse (rank J <= 45), the asymptotic obstruction (Theorem 5.14), and the

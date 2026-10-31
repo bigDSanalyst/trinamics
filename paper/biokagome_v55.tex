@@ -8,7 +8,7 @@
 \usepackage{mathtools,bm,booktabs,array,enumitem,listings,xcolor,tabularx}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black,
-  pdftitle={Hierarchical Bio-Kagome Solid-State Metamaterials (v5.4)},
+  pdftitle={Hierarchical Bio-Kagome Solid-State Metamaterials (v5.5)},
   pdfauthor={Nicholas Clifford Maino III}}
 
 \newtheorem{theorem}{Theorem}[section]
@@ -38,7 +38,7 @@ and Identifiability of Three- and Four-Chord Schur-Complement Boundary Tomograph
 \author{\textbf{Nicholas Clifford Maino III}\\
 Independent Computational \& Materials Research, Melbourne, Victoria, Australia\\
 \texttt{License: CC-BY-4.0}}
-\date{October 31, 2026 (Revision 5.4; supersedes Revisions 4.0 and 5.0--5.3)}
+\date{October 31, 2026 (Revision 5.5; supersedes Revisions 4.0 and 5.0--5.4)}
 
 \begin{document}
 \maketitle
@@ -58,6 +58,8 @@ Independent Computational \& Materials Research, Melbourne, Victoria, Australia\
 Conventional interactive surfaces and biometric arrays rely on continuous active capacitive polling, multilayer PCBs, active-matrix TFT backplanes, and 2D affine transformations --- incurring continuous static power ($P_{\text{static}} > 0$), harness mass, and EMI vulnerability. We formalize \textit{physical-computational displacement}: replacing active silicon logic and coordinate transforms by passive mechanical constraints, material phase transitions, and graph-theoretic boundary topologies. Specifically: (i) \textbf{rotational affine eradication} via a kinematic dual-finger mold ($\theta_{\text{yaw}} = 0^\circ \Rightarrow \mathbf{R} = \mathbf{I}_2$); (ii) \textbf{hardware interrupt gating} via a $0$--$3$ piezoelectric film; and (iii) \textbf{passive boundary tomography} via chord currents along three lattice directions (four in Revision~4.0) and an augmented Schur-complement decoder~\cite{calderon1980,schur1917}, whose identifiability we determine exactly (Section~\ref{sec:inv}). Section~\ref{sec:nonlin} treats the nonlinear problem (monotonicity, the rank of the boundary Jacobian, screening by closed ridge loops, seeded ridge classes), Section~\ref{sec:split} chords read in interleaved parts, and Section~\ref{sec:convex} convex ridges; related work is in Section~\ref{sec:related}.
 
 \subsection{Related work}\label{sec:related}
+\noindent\textbf{Scope and prior-art grounding.} All identifiability, monotonicity, data-collapse, and split-chord theorems in Section~\ref{sec:inv} are substrate-agnostic: they hold for any passive resistor-shunt network sharing this Breathing Kagome graph topology and conductance regime, independent of the illustrative bio-composite material parameters modelled in Sections~2--4. The switching-component constructions in Theorems~\ref{thm:ghost}(5) and~\ref{thm:splitker}(1) are specific instances of Hajdu--Tijdeman algebraic discrete tomography~\cite{hajdu2001} (extending Ryser's switching operation~\cite{ryser1957}), while the convex-uniqueness cross-ratio obstruction in Proposition~\ref{prop:convex} applies the criterion of Gardner and Gritzmann~\cite{gardner1997} to hexagonal-grid tomography~\cite{matej1998,nagy2016}. Within this classical framework, our specific contributions are the closed-form dilated kernel count $T_k(R)$ on the hexagonal domain (Theorem~\ref{thm:splitker}), the global nonlinear boundary data-collapse bound $\operatorname{rank}\mathbf{J}(\mathbf{s})\le 45$ (Theorem~\ref{thm:collapse}), the asymptotic split-chord rank breakdown for fixed $k$ (Theorem~\ref{thm:splitscale}), and the explicit realization of the Gardner--Gritzmann cross-ratio-2 convex obstruction on the $R_{\text{hex}}=8$ lattice (Proposition~\ref{prop:convex}).
+
 \emph{Discrete tomography.} The chord data of Section~\ref{sec:inv} are discrete X-rays: line sums of a binary function on a lattice set in a few lattice directions. Functions with zero line sums are the switching components of discrete tomography, going back to Ryser's interchanges for rows and columns~\cite{ryser1957}. Hajdu and Tijdeman characterised them completely: on a rectangular grid every function with zero line sums along a finite set of directions is a combination of translates of the product of the binomials belonging to the directions~\cite{hajdu2001}, and they applied this to rows, columns, diagonals and anti-diagonals~\cite{hajdu2001laa}, which are the four chord families here in axial coordinates. Stolk and Batenburg describe the structure of the line sums for finite convex sets~\cite{stolk2010}. The switching component $\mathbf{z}$ of Theorem~\ref{thm:ghost}(5) and its dilations in Theorem~\ref{thm:splitker} are instances of this theory; what is specific here is the count of their translates in the hexagonal domain, the computed spanning, and the comparison with the rank of the boundary data.
 
 \emph{Uniqueness.} Gardner and Gritzmann proved that four suitably chosen lattice directions determine convex lattice sets by their X-rays, that three never suffice, and that any seven do; in particular four directions suffice whenever the cross ratio of their slopes avoids $\{4/3,3/2,2,3,4\}$~\cite{gardner1997}. The four chord families have cross ratio 2, so convex ridges are not guaranteed to be determined, and Section~\ref{sec:convex} gives the explicit pair.
@@ -229,7 +231,7 @@ Let $\mathbf{L}(\mathbf{y}) = \mathbf{L}_0 + \sum_{c\in I}\Delta y_c \mathbf{E}_
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-Substituting the exact resolvent identity $(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1} = \mathbf{L}_{II,0}^{-1} - \mathbf{L}_{II,0}^{-1}\Delta\mathbf{Y}\mathbf{L}_{II,0}^{-1} + \mathbf{L}_{II,0}^{-1}\Delta\mathbf{Y}(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\Delta\mathbf{Y}\mathbf{L}_{II,0}^{-1}$ into $\Lambda_\partial = L_{BB} - L_{BI}L_{II}^{-1}L_{IB}$ yields $\Lambda_\partial(\Delta\mathbf{y}) - \Lambda_\partial(\mathbf{0}) = \mathbf{G}_0^T\Delta\mathbf{Y}\mathbf{G}_0 - \mathbf{G}_0^T\Delta\mathbf{Y}(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\Delta\mathbf{Y}\mathbf{G}_0$. Since $\|\mathbf{E}_c\|_2 = 1/3$ and the $\mathbf{E}_c$ have disjoint supports, $\|\Delta\mathbf{Y}\|_2 = \Delta y_{\max}/3$; for $\Delta\mathbf{Y}\succeq0$, $\|(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\|_2 \le 1/\lambda_{\min}(\mathbf{L}_{II,0})$. Verification (App.~\ref{app:code}): complex-step differentiation~\cite{squire1998} of $\operatorname{diag}\Lambda_\partial$ reproduces $\mathbf{A}_I$ in all 169 columns to within $9.0\times10^{-11}$ ($y_{\text{base}} = 10^{-6}$ S) and $2.9\times10^{-10}$ ($10^{-7}$ S) componentwise, and the identity in (3) holds to within $8.3\times10^{-9}$ and $8.5\times10^{-10}$ at a random admissible $\Delta\mathbf{y}$.
+Substituting the exact resolvent identity $(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1} = \mathbf{L}_{II,0}^{-1} - \mathbf{L}_{II,0}^{-1}\Delta\mathbf{Y}\mathbf{L}_{II,0}^{-1} + \mathbf{L}_{II,0}^{-1}\Delta\mathbf{Y}(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\Delta\mathbf{Y}\mathbf{L}_{II,0}^{-1}$ into $\Lambda_\partial = L_{BB} - L_{BI}L_{II}^{-1}L_{IB}$ yields $\Lambda_\partial(\Delta\mathbf{y}) - \Lambda_\partial(\mathbf{0}) = \mathbf{G}_0^T\Delta\mathbf{Y}\mathbf{G}_0 - \mathbf{G}_0^T\Delta\mathbf{Y}(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\Delta\mathbf{Y}\mathbf{G}_0$. Since $\|\mathbf{E}_c\|_2 = 1/3$ and the $\mathbf{E}_c$ have disjoint supports, $\|\Delta\mathbf{Y}\|_2 = \Delta y_{\max}/3$; for $\Delta\mathbf{Y}\succeq0$, $\|(\mathbf{L}_{II,0}+\Delta\mathbf{Y})^{-1}\|_2 \le 1/\lambda_{\min}(\mathbf{L}_{II,0})$. Verification (App.~\ref{app:code}): complex-step differentiation~\cite{squire1998} of $\operatorname{diag}\Lambda_\partial$ reproduces $\mathbf{A}_I$ in all 169 columns to within $1.1\times10^{-10}$ ($y_{\text{base}} = 10^{-6}$ S) and $3.5\times10^{-10}$ ($10^{-7}$ S) componentwise, and the identity in (3) holds to within $8.4\times10^{-9}$ and $8.4\times10^{-10}$ at a random admissible $\Delta\mathbf{y}$.
 \end{proof}
 
 \subsection{Augmented Stage-B Operator and its Identifiability}
@@ -312,7 +314,7 @@ Write $\Lambda_\partial = \mathbf{W}^T\mathbf{L}\mathbf{W}$ with $\mathbf{W} = [
 
 (2) Along $\mathbf{s}(t) = \mathbf{s}+t(\mathbf{s}'-\mathbf{s})\in[0,1]^{N_I}$, $\frac{d}{dt}\Lambda_{\partial,bb}(\mathbf{s}(t)) = \sum_c (s'_c-s_c)\,J_{bc}(\mathbf{s}(t))$ is a sum of non-negative terms of which at least one is positive by (1); integrate over $t\in[0,1]$.
 
-Verification (App.~\ref{app:code}): the sign pattern, diagonal dominance, connectivity and $\mathbf{G}[:,\text{active}] > \mathbf{0}$ at 12 states ($\mathbf{0}$, $\mathbf{s}^\star$, six uniform random states and four random binary states) for both designs; \eqref{eq:mono} against complex-step derivatives in 24 columns at two states (relative error $\le 3.0\times10^{-10}$); and, for (2), ten pairs of states that differ in one cell, with the integrand positive at six points of every segment and all 381 resolvable boundary increases positive.
+Verification (App.~\ref{app:code}): the sign pattern, diagonal dominance, connectivity and $\mathbf{G}[:,\text{active}] > \mathbf{0}$ at 12 states ($\mathbf{0}$, $\mathbf{s}^\star$, six uniform random states and four random binary states) for both designs; \eqref{eq:mono} against complex-step derivatives in 24 columns at two states (relative error $\le 1.7\times10^{-10}$); and, for (2), ten pairs of states that differ in one cell, with the integrand positive at six points of every segment and all 381 resolvable boundary increases positive.
 \end{proof}
 These minima lie many orders of magnitude below the noise level $\sigma_\Lambda$ of Theorem~\ref{thm:ghost}, so Lemma~\ref{lem:monotone}(2) is a statement about exact data, not about robustness to noise. Without strictness, part (1) is Rayleigh's monotonicity law~\cite{doyle1984}; strictness at the active nodes comes from the positivity of $\mathbf{L}_{II}(\mathbf{s})^{-1}$. It does not extend to incomparable states, which Theorem~\ref{thm:ghost}(3,5) already shows can be confused.
 
@@ -443,10 +445,37 @@ so for every fixed $k$ the stacked operator is rank-deficient once $T_k(R)>d(R)$
 \begin{proof}
 For a basis $\mathbf{K}$ of $\ker\mathbf{C}$, $\operatorname{rank}[\mathbf{A}_I;\mathbf{C}] = \operatorname{rank}\mathbf{C}+\operatorname{rank}(\mathbf{A}_I\mathbf{K})$, and $\operatorname{rank}(\mathbf{A}_I\mathbf{K})\le\operatorname{rank}\mathbf{A}_I\le d(R)$ (Theorem~\ref{thm:ghost}(2)). With $\dim\ker\mathbf{C}^{(k)}\ge T_k(R)$ this gives~\eqref{eq:splitbound}, and $d(R)\le18R$ because $B$ has $18R$ nodes. For $k = 3$ the listing finds $d(R) = 6R-3$ for $2\le R\le15$, so $T_3(R)-d(R) = 3R^2-39R+91>0$ for $10\le R\le15$, while $T_3(R)-18R = 3R^2-51R+88>0$ for $R\ge16$. Full rank for $R\le9$ and the values at $R = 10, 11$ follow from mod-$p$ lower bounds and~\eqref{eq:splitbound}. At $R = 10$, $\mathbf{K}$ consists of the 58 translates, $\operatorname{rank}\mathbf{C}^{(3)} = 213$, and $\mathbf{A}_I\mathbf{K}$ has rank 55 modulo four primes and three singular values at round-off level in double precision, so the rank is most likely 268.
 \end{proof}
+
+\begin{corollary}[Critical radius for arbitrary split order $k$]\label{cor:rcrit}
+Whenever $d(R) = 6R - 3$, the inequality $T_k(R) > d(R)$ holds for all
+\begin{equation}
+R_{\text{hex}} \ge R_{\text{crit}}(k) = \left\lfloor \frac{10k + 9 + \sqrt{4k^2 + 120k + 33}}{6} \right\rfloor + 1.
+\end{equation}
+For small $k$ this gives $R_{\text{crit}}(1)=6$, $R_{\text{crit}}(2)=8$,
+$R_{\text{crit}}(3)=10$, $R_{\text{crit}}(4)=13$, $R_{\text{crit}}(5)=15$;
+for $k=1$ and $k=3$ these are the onsets of rank deficiency observed in
+Table~\ref{tab:family} (four families) and in Theorem~\ref{thm:splitscale}.
+The root inside the floor is $2k + \tfrac{13}{2} + O(1/k)$, since
+$\sqrt{4k^2 + 120k + 33} = 2k + 30 + O(1/k)$; exactly, $R_{\text{crit}}(k) = 2k + 7$
+if and only if $k \ge 58$, so the additive constant is eventually $7$ rather
+than the simpler $4$ one might guess.
+Unconditionally (using only $d(R) \le 18R$),
+$\operatorname{rank}[\mathbf{A}_I;\mathbf{C}^{(k)}] < N_I$ for all
+$R_{\text{hex}} \ge \lfloor (10k + 21 + \sqrt{4k^2 + 360k + 429})/6 \rfloor + 1$,
+which is $R_{\text{hex}}\ge16$ for $k=3$.
+\end{corollary}
+\begin{proof}
+For $R\ge2k+1$ the condition $T_k(R) > d(R)$ reads $3R^2 - (10k+9)R + (8k^2+5k+4) > 0$,
+whose larger root is $(10k+9+\sqrt{4k^2+120k+33})/6 > 2k+1$; since $R$ is an integer,
+$R \ge \lfloor \cdot \rfloor + 1$ suffices, and Theorem~\ref{thm:splitscale} then gives the rank deficiency. The unconditional bound replaces
+$d(R)$ by $18R$ and follows identically. The asymptotics follow from the
+binomial expansion $\sqrt{4k^2+120k+33} = 2k\sqrt{1+30/k+O(1/k^2)} = 2k+30+O(1/k)$.
+For the exact statement, $R_{\text{crit}}(k)=2k+7$ means $2k+27\le\sqrt{4k^2+120k+33}<2k+33$; the right inequality always holds and the left one is $12k\ge696$.
+\end{proof}
 Any linear probe set $\mathbf{P}$ satisfies $\operatorname{rank}[\mathbf{A}_I;\mathbf{P}]\le d(R)+\operatorname{rows}(\mathbf{P})$, so full rank needs at least $N_I-d(R)$ probe rows, quadratically many in $R$, whatever the design. Splitting to $k\ge R/2$ leaves no dilated translate ($T_k = 0$), and at $R = 8$ the chords alone then have full rank ($k = 4, 5$), at the cost of $k$ channels per line. How the separation in noise units of screened pairs behaves for such designs at larger $R$ is open.
 
 \begin{remark}[Conditioning of the split operators]\label{rem:splitcond}
-Rank is not resolution. At the design point the 163rd singular value of $[\mathbf{A}_I;\mathbf{C}^{(2)}]$ is $8.373\times10^{-10}$ against $\sigma_1 = 4.668$; at $y_{\text{base}} = 10^{-6}$ S it is $1.2\times10^{-15}$, at round-off level. For $[\mathbf{A}_I;\mathbf{C}^{(3)}]$ the condition number is $43{,}172$ at the design point ($43{,}171$ after column equilibration, $2{,}150$ after row equilibration) and $5.24\times10^{7}$ at $y_{\text{base}} = 10^{-6}$ S ($2.91\times10^{5}$ after row equilibration); the boundary block sees the 16 directions of $\ker\mathbf{C}^{(3)}$ with singular values from $3.99\times10^{-2}$ down to $8.80\times10^{-5}$ (down to $7.24\times10^{-8}$ at $10^{-6}$ S). The three-family subsets of Proposition~\ref{prop:split} reach full rank at a price: at the design point their condition numbers are $9.17\times10^{5}$ for $\{m,n,m-n\}$ and $2.78\times10^{7}$ for the other two. These numbers depend on how the dimensionless rows of $\mathbf{A}_I$ are weighted against the 0/1 chord rows, and $\mathbf{A}_I$ is a linearisation that misses the data at the operating point by a factor of up to 1115 (Remark~\ref{rem:mc}). The separations of Theorem~\ref{thm:splitscreen}, computed from the nonlinear model in noise units, are the relevant measure.
+Rank is not resolution. At the design point the 163rd singular value of $[\mathbf{A}_I;\mathbf{C}^{(2)}]$ is $8.373\times10^{-10}$ against $\sigma_1 = 4.668$; at $y_{\text{base}} = 10^{-6}$ S it is $9.8\times10^{-16}$, at round-off level. For $[\mathbf{A}_I;\mathbf{C}^{(3)}]$ the condition number is $43{,}172$ at the design point ($43{,}171$ after column equilibration, $2{,}150$ after row equilibration) and $5.24\times10^{7}$ at $y_{\text{base}} = 10^{-6}$ S ($2.91\times10^{5}$ after row equilibration); the boundary block sees the 16 directions of $\ker\mathbf{C}^{(3)}$ with singular values from $3.99\times10^{-2}$ down to $8.80\times10^{-5}$ (down to $7.24\times10^{-8}$ at $10^{-6}$ S). The three-family subsets of Proposition~\ref{prop:split} reach full rank at a price: at the design point their condition numbers are $9.17\times10^{5}$ for $\{m,n,m-n\}$ and $2.78\times10^{7}$ for the other two. These numbers depend on how the dimensionless rows of $\mathbf{A}_I$ are weighted against the 0/1 chord rows, and $\mathbf{A}_I$ is a linearisation that misses the data at the operating point by a factor of up to 1115 (Remark~\ref{rem:mc}). The separations of Theorem~\ref{thm:splitscreen}, computed from the nonlinear model in noise units, are the relevant measure.
 \end{remark}
 
 \begin{remark}[Standard versus mod-3 chords on the same ridges]\label{rem:splitstudy}
@@ -506,7 +535,7 @@ Intracell phase offsets & $211.22^\circ$, $334.44^\circ$ & Thm.~\ref{thm:jac}(1)
 $\max\|\mathbf{E}_0^{-1}\Delta\mathbf{E}\|_2$ & $0.55089_\uparrow$, $0.52212_\downarrow$ (first-order bound $0.800_\uparrow$, $0.556_\downarrow$) & Thm.~\ref{thm:jac}(2,3) \\
 Orientation margin & $\min\det(\mathbf{I}+\mathbf{E}_0^{-1}\Delta\mathbf{E}) = 0.57854_\uparrow$, $0.69278_\downarrow$ over 65{,}879 + 66{,}140 triangles & Thm.~\ref{thm:jac}(3) \\
 Design changes (Rev.~4.0) & $y_{\text{base}} = 10^{-7}$ S (was $10^{-6}$); fourth chord family along $m-n$ (29 lines) & §\ref{sec:inv}.1 \\
-Fréchet derivative check & complex step, $\le 9.0\times10^{-11}$ / $2.9\times10^{-10}$ ($y_{\text{base}} = 10^{-6}$ / $10^{-7}$ S, 169 columns) & Thm.~\ref{thm:frechet} \\
+Fréchet derivative check & complex step, $\le 1.1\times10^{-10}$ / $3.5\times10^{-10}$ ($y_{\text{base}} = 10^{-6}$ / $10^{-7}$ S, 169 columns) & Thm.~\ref{thm:frechet} \\
 Chord FWER & $\le 2.44\times10^{-9}$ (45 chords), $\le 4.01\times10^{-9}$ (74 chords) & Thm.~\ref{thm:ghost}(1) \\
 $\operatorname{rank}\widetilde{\mathbf{A}}_I$ & 87 (baseline), 112 (Rev.~4.0) of 169; kernel dimension 82 / 57; exact & Thm.~\ref{thm:ghost}(2) \\
 Test ridge & baseline: 3 chord-consistent patterns, separation $0.5265\,\sigma_\Lambda$, any decoder errs w.p.\ $\ge 0.396$; Rev.~4.0: determined by the chords ($\operatorname{rank}\mathbf{C}_K = K = 16$) & Thm.~\ref{thm:ghost}(3,4) \\
@@ -525,8 +554,17 @@ Same ridges, mod-3 chords & 100/100 unique, 20000/20000 for both classes (standa
 Convex ridges & cross ratio 2; mirror-image 8-cell parallelograms share all chord data (102 placements); boundary separation $\ge30.08\,\sigma_\Lambda$ isolated, $\le6.14\times10^{-4}\,\sigma_\Lambda$ inside the 36-cell loop & Prop.~\ref{prop:convex} \\
 \bottomrule
 \end{tabularx}
-\caption{Verified design specifications (Revision 5.4). Every computed entry is printed by the listings in App.~\ref{app:code}.}\label{tab:specs}
+\caption{Verified design specifications (Revision 5.5). Every computed entry is printed by the listings in App.~\ref{app:code}.}\label{tab:specs}
 \end{table}
+
+% ============================================================================
+\section*{Revision 5.5: scope and critical radius}
+\addcontentsline{toc}{section}{Revision 5.5 notes}
+\begin{enumerate}[noitemsep,leftmargin=*]
+\item Section~\ref{sec:related} opens with a scope paragraph: the results of Section~\ref{sec:inv} are substrate-agnostic, and the switching-component and cross-ratio results are placed within classical discrete tomography, with the contributions of this paper listed separately.
+\item New Corollary~\ref{cor:rcrit}: a closed form for the radius $R_{\text{crit}}(k)$ beyond which $\mathbf{C}^{(k)}$ with the boundary block is rank-deficient, checked by the listing. Remarks and propositions after it are renumbered by one.
+\item The listings are re-run. Only round-off-level values move: the complex-step and remainder bounds of Theorem~\ref{thm:frechet} and Lemma~\ref{lem:monotone} and $\sigma_{163}$ at $y_{\text{base}} = 10^{-6}$ S in Remark~\ref{rem:splitcond}, all of which are quoted at the new values; no stated result changes.
+\end{enumerate}
 
 % ============================================================================
 \section*{Revision 5.4: editorial}
@@ -641,12 +679,12 @@ Convex ridges & cross ratio 2; mirror-image 8-cell parallelograms share all chor
 
 % ============================================================================
 \appendix
-\section{Verification Suite (Revision 5.4)}\label{app:code}
+\section{Verification Suite (Revision 5.5)}\label{app:code}
 % ============================================================================
 Requires only \texttt{numpy}; runtime $\approx$220 s on one CPU core. Every computed number in Sections~2--5 and in Tables~\ref{tab:configs}, \ref{tab:family} and~\ref{tab:specs} is printed by this listing, except the ball-arithmetic enclosures and the exact rank at $R_{\text{hex}} = 4$, which are printed by the supplementary script of App.~\ref{app:supp}. Each block raises \texttt{AssertionError} if a stated claim fails. Upper bounds are printed rounded up and lower bounds rounded down.
 
-\begin{lstlisting}[language=Python,style=cleanstyle,caption={Verification suite for Sections~2--5, Theorems~\ref{thm:bloch}--\ref{thm:splitscale}, Propositions~\ref{prop:family}, \ref{prop:split} and~\ref{prop:convex} and Tables~\ref{tab:configs}, \ref{tab:family} and~\ref{tab:specs}.}]
-"""Verification suite for 'Hierarchical Bio-Kagome Solid-State Metamaterials' (Revision 5.4).
+\begin{lstlisting}[language=Python,style=cleanstyle,caption={Verification suite for Sections~2--5, Theorems~\ref{thm:bloch}--\ref{thm:splitscale}, Corollary~\ref{cor:rcrit}, Propositions~\ref{prop:family}, \ref{prop:split} and~\ref{prop:convex} and Tables~\ref{tab:configs}, \ref{tab:family} and~\ref{tab:specs}.}]
+"""Verification suite for 'Hierarchical Bio-Kagome Solid-State Metamaterials' (Revision 5.5).
 
 Every number printed is computed below; no result string is hard-coded.  Only numpy is
 required (exact ranks use a self-contained modular-arithmetic elimination).
@@ -1837,8 +1875,36 @@ def verify_split_ranks():
     print("[Sec.5.5] Prop 5.12 mod-3 family subsets, rank C | rank [A_I; C] (exact): " + ", ".join(out))
 
 
+def verify_rcrit():
+    """Corollary 5.15: R_crit(k) formula matches observed transitions."""
+    import math
+    def R_crit(k):
+        return int((10*k + 9 + math.sqrt(4*k*k + 120*k + 33)) / 6) + 1
+    def R_unc(k):
+        return int((10*k + 21 + math.sqrt(4*k*k + 360*k + 429)) / 6) + 1
+    def T(k, R):
+        return 3*R*R - (10*k + 3)*R + 8*k*k + 5*k + 1 if R >= 2*k + 1 else 0
+    def brute(k, d):  # smallest R0 with T_k(R) > d(R) for every R >= R0 (quadratic: beyond 4k+60 nothing changes)
+        return 1 + max(R for R in range(1, 4*k + 60) if T(k, R) <= d(R))
+    expected = {1: 6, 2: 8, 3: 10, 4: 13, 5: 15}
+    for k, want in expected.items():
+        got = R_crit(k)
+        assert got == want, f"R_crit({k}) = {got}, expected {want}"
+    for k in range(1, 501):
+        assert R_crit(k) == brute(k, lambda R: 6*R - 3), k
+        assert R_unc(k) == brute(k, lambda R: 18*R), k
+        assert (R_crit(k) - 2*k == 7) == (k >= 58), k
+    assert R_unc(3) == 16  # matches the R >= 16 of Theorem 5.14
+    # asymptotic check: additive constant approaches 7
+    for k in (100, 1000, 10000):
+        gap = R_crit(k) - 2 * k
+        assert 6 <= gap <= 7, f"R_crit({k}) - 2k = {gap}, expected 6..7"
+    print(f"[Sec.5.5] Cor 5.15: R_crit(k) verified for k=1..5 "
+          f"(1:6, 2:8, 3:10, 4:13, 5:15); R_crit(10000) - 20000 = {R_crit(10000)-20000} (asymptote 7)")
+
+
 def verify_split_conditioning():
-    """Remark 5.15: singular values of the stacked linear operators."""
+    """Remark 5.16: singular values of the stacked linear operators."""
     sv = lambda M: np.linalg.svd(M, compute_uv=False)
     for yb in (1e-7, 1e-6):
         net = Network(replace(Spec(), chord_families=4, y_base=yb))
@@ -1849,7 +1915,7 @@ def verify_split_conditioning():
         Mn = M[np.linalg.norm(M, axis=1) > 0]
         sr = sv(Mn/np.linalg.norm(Mn, axis=1)[:, None]); scol = sv(M/np.linalg.norm(M, axis=0))
         _, _, Vt = np.linalg.svd(C3.astype(float)); sa = sv(A @ Vt[153:].T)
-        print(f"[Sec.5.5] Rem 5.15 y_base={yb:g}: [A_I; C^(2)] sigma_1 = {s2[0]:.3e}, sigma_163 = {s2[162]:.3e}, "
+        print(f"[Sec.5.5] Rem 5.16 y_base={yb:g}: [A_I; C^(2)] sigma_1 = {s2[0]:.3e}, sigma_163 = {s2[162]:.3e}, "
               f"sigma_164 = {s2[163]:.3e}; [A_I; C^(3)] sigma_max = {s3[0]:.3e}, sigma_min = {s3[-1]:.3e}, "
               f"kappa = {s3[0]/s3[-1]:.0f} (column-equilibrated {scol[0]/scol[-1]:.0f}, row-equilibrated {sr[0]/sr[-1]:.0f}); "
               f"A_I on ker C^(3): singular values {sa[0]:.2e} .. {sa[-1]:.2e}")
@@ -1857,7 +1923,7 @@ def verify_split_conditioning():
         for sub in (("m", "n", "q"), ("m", "p", "q"), ("n", "p", "q")):
             st = sv(np.vstack([A, split_rows(net, sub, 3)]))
             trip.append(f"{''.join(sub)} {st[0]/st[-1]:.2e}")
-        print(f"[Sec.5.5] Rem 5.15 y_base={yb:g}: kappa of [A_I; C^(3)] on the full-rank three-family subsets: " + ", ".join(trip))
+        print(f"[Sec.5.5] Rem 5.16 y_base={yb:g}: kappa of [A_I; C^(3)] on the full-rank three-family subsets: " + ", ".join(trip))
 
 
 def verify_split_screening():
@@ -1933,7 +1999,7 @@ def verify_split_scaling():
 
 
 def split_decoding_study():
-    """Remark 5.16: standard versus mod-3 split chords on the same seeded ridges."""
+    """Remark 5.17: standard versus mod-3 split chords on the same seeded ridges."""
     net = Network(Spec()); s = net.s
     L0, G0 = linear_model(net)[:2]
     inner = [c for c in net.pos if radius(c) <= 5]; inner_set = set(inner)
@@ -1989,7 +2055,7 @@ def split_decoding_study():
                 if len(sols) > 1:
                     multi.append(f"{len(sols)} patterns, ML {ok}/200, separations "
                                  f"{[round(float(np.linalg.norm(sigs[q] - dL)/sd), 2) for q in keys if q != tk]} std")
-            print(f"[Sec.5.5] Rem 5.16 {cname}, {dname} chords ({C.shape[0]} rows): unique chord data {uniq}/100, "
+            print(f"[Sec.5.5] Rem 5.17 {cname}, {dname} chords ({C.shape[0]} rows): unique chord data {uniq}/100, "
                   f"ML exact {n_ok}/20000" + (f"; non-unique: {'; '.join(multi)}" if multi else ""))
 
 
@@ -2040,7 +2106,7 @@ def chord_data(cells, fams):
 
 
 def verify_convex(lin):
-    """Proposition 5.17: convex ridges with identical chord data, and how well the boundary separates them."""
+    """Proposition 5.18: convex ridges with identical chord data, and how well the boundary separates them."""
     slopes = (-1.0, 0.0, 1.0)                       # with infinity: cross ratio (c-a)/(c-b) for a<b<c<inf
     cr = (slopes[2] - slopes[0])/(slopes[2] - slopes[1])
     assert cr == 2.0
@@ -2058,7 +2124,7 @@ def verify_convex(lin):
         coll = [g for g in groups.values() if len(g) > 1]
         res[len(fams)] = (len(coll), min(len(g[0]) for g in coll))
     assert res[3][1] == 4 and res[4][1] == 8
-    print(f"[Sec.5.6] Prop 5.17: cross ratio of the four chord slopes = {cr:g}; {len(convex)} convex lattice sets generated by "
+    print(f"[Sec.5.6] Prop 5.18: cross ratio of the four chord slopes = {cr:g}; {len(convex)} convex lattice sets generated by "
           f"<= 4 of the {len(W)} cells within radius 3: three families: {res[3][0]} chord-data classes with distinct convex "
           f"sets, smallest {res[3][1]} cells; four families: {res[4][0]} classes, smallest {res[4][1]} cells")
     plus, minus = switching_component(net)
@@ -2080,7 +2146,7 @@ def verify_convex(lin):
     iso = np.array([sep(F1, F2) for F1, F2 in pairs if all(radius(c) <= s.R_hex - 2 for c in F1 | F2)])
     ring = [c for c in net.pos if radius(c) == s.R_hex - 2]
     enc = np.array([sep(set(ring) | F1, set(ring) | F2) for F1, F2 in pairs if all(radius(c) < s.R_hex - 2 for c in F1 | F2)])
-    print(f"[Sec.5.6] Prop 5.17: the two lattice parallelograms S+ u I and S- u I (I = 4 interior points) are convex, have "
+    print(f"[Sec.5.6] Prop 5.18: the two lattice parallelograms S+ u I and S- u I (I = 4 interior points) are convex, have "
           f"identical chord data in all four families and differ by the switching component; {len(pairs)} placements in the "
           f"interior; isolated ({len(iso)} placements, radius <= {s.R_hex - 2}): separation {dn(iso.min(), 4)} .. "
           f"{up(iso.max(), 4)} std; inside the closed radius-{s.R_hex - 2} ring ({len(enc)} placements): {dn(enc.min(), 3)} .. "
@@ -2123,6 +2189,7 @@ if __name__ == "__main__":
     verify_split_ranks()
     verify_split_screening()
     verify_split_scaling()
+    verify_rcrit()
     verify_split_conditioning()
     split_decoding_study()
     verify_convex(lin)
@@ -2140,27 +2207,27 @@ if __name__ == "__main__":
 [Sec.4] down: 66140 perturbed triangles (1126 not in v3.8 anchor rule of 65296); max||E0^-1 dE|| = 0.52212; min det(I+M) = 0.69278; min det(E)/det_ref = 0.9993; min det(E0)/det_ref = 1.0000
 [Sec.4] down: max ||E0^-1|| / (sqrt2/(ell R/rho)) = 1.0089; min det(E)/float-error bound >= 2.9e+10
 [Sec.4] first-order sup: up 0.5451, down 0.5424; rigorous first-order bound 4*mu*eta*a2/ell (mu=1.025): up 0.8000, down 0.5559
-[Sec.5] y_base=1e-06: Thm5.1 complex-step max rel. err over 169 columns <= 9.0e-11; remainder identity residual <= 8.3e-9; ||R2|| = 6.66e-11 <= 2.08e-10
+[Sec.5] y_base=1e-06: Thm5.1 complex-step max rel. err over 169 columns <= 1.1e-10; remainder identity residual <= 8.4e-9; ||R2|| = 6.66e-11 <= 2.08e-10
 [Sec.5] y_base=1e-06: lambda_min(L_II) = 3.389e-07 S, cond(L_II) = 1.92e+05; remainder bound at dy = y_ridge: 1.30e-01 S
 [Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): 144 boundary nodes, 75 without interior neighbour, 45 distinct rows -> rank A_I = 45; 3 chord families, 45 lines, rank C = 42; rank [A_I; w_c C] = 87 of 169; dim ker = 82 (exact)
 [Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): chord gate 45 lines, p_chord <= Q(6.455) <= 5.42e-11, FWER <= 2.44e-9 (line-length-aware <= 2.48e-10); max|dLambda| = 5.9003e-14 S, w_c = 2.36e-11; ||dL - A s y_r||/||dL|| = 21.9
 [Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): K = 17, rank C_K = 13, rank [A_K; w_c C_K] = 17 (exact), sigma(A_K) ratio 6.8e-05; 3 binary pattern(s) share the chord data; ghost separation 0.5265, 0.5265 std -> any decoder errs w.p. >= 0.396
 [Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): full Schur matrix: linearised Jacobian rank 169 of 169 (exact); ghost separation 0.794, 0.794 std -> decoder error >= 0.345; sigma(A_K) = [6.30e-10, 4.31e-14]
-[Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): MC 2000 @ 34.0 dB: K in [17, 17]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 2.3e-10); maximum likelihood 1239/2000 (0.015 ms/trial select)
-[Sec.5] y_base=1e-07: Thm5.1 complex-step max rel. err over 169 columns <= 2.9e-10; remainder identity residual <= 8.5e-10; ||R2|| = 2.91e-09 <= 2.58e-08
+[Sec.5] R3.9 baseline (y_base=1e-6, 3 fam): MC 2000 @ 34.0 dB: K in [17, 17]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 2.3e-10); maximum likelihood 1239/2000 (0.006 ms/trial select)
+[Sec.5] y_base=1e-07: Thm5.1 complex-step max rel. err over 169 columns <= 3.5e-10; remainder identity residual <= 8.4e-10; ||R2|| = 2.91e-09 <= 2.58e-08
 [Sec.5] y_base=1e-07: lambda_min(L_II) = 3.888e-08 S, cond(L_II) = 1.67e+06; remainder bound at dy = y_ridge: 1.61e+01 S
 [Sec.5] y_base=1e-7, 3 fam: 144 boundary nodes, 75 without interior neighbour, 45 distinct rows -> rank A_I = 45; 3 chord families, 45 lines, rank C = 42; rank [A_I; w_c C] = 87 of 169; dim ker = 82 (exact)
 [Sec.5] y_base=1e-7, 3 fam: chord gate 45 lines, p_chord <= Q(6.455) <= 5.42e-11, FWER <= 2.44e-9 (line-length-aware <= 2.48e-10); max|dLambda| = 1.6549e-10 S, w_c = 6.62e-08; ||dL - A s y_r||/||dL|| = 1115.4
 [Sec.5] y_base=1e-7, 3 fam: K = 17, rank C_K = 13, rank [A_K; w_c C_K] = 17 (exact), sigma(A_K) ratio 8.9e-04; 3 binary pattern(s) share the chord data; ghost separation 4.4595, 4.4598 std -> any decoder errs w.p. >= 0.0128
-[Sec.5] y_base=1e-7, 3 fam: MC 2000 @ 34.0 dB: K in [17, 17]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 0.0014); maximum likelihood 1973/2000 (0.014 ms/trial select)
+[Sec.5] y_base=1e-7, 3 fam: MC 2000 @ 34.0 dB: K in [17, 17]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 0.0014); maximum likelihood 1973/2000 (0.006 ms/trial select)
 [Sec.5] y_base=1e-6, 4 fam: 144 boundary nodes, 75 without interior neighbour, 45 distinct rows -> rank A_I = 45; 4 chord families, 74 lines, rank C = 67; rank [A_I; w_c C] = 112 of 169; dim ker = 57 (exact)
 [Sec.5] y_base=1e-6, 4 fam: chord gate 74 lines, p_chord <= Q(6.455) <= 5.42e-11, FWER <= 4.01e-9 (line-length-aware <= 2.48e-10); max|dLambda| = 5.9003e-14 S, w_c = 2.36e-11; ||dL - A s y_r||/||dL|| = 21.9
 [Sec.5] y_base=1e-6, 4 fam: K = 16, rank C_K = 16, rank [A_K; w_c C_K] = 16 (exact), sigma(A_K) ratio 3.1e-02; 1 binary pattern(s) share the chord data; the chord data determine the ridge
-[Sec.5] y_base=1e-6, 4 fam: MC 2000 @ 34.0 dB: K in [16, 16]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 2.4e-10); maximum likelihood 2000/2000 (0.013 ms/trial select)
+[Sec.5] y_base=1e-6, 4 fam: MC 2000 @ 34.0 dB: K in [16, 16]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 2.4e-10); maximum likelihood 2000/2000 (0.006 ms/trial select)
 [Sec.5] R4.0 design (y_base=1e-7, 4 fam): 144 boundary nodes, 75 without interior neighbour, 45 distinct rows -> rank A_I = 45; 4 chord families, 74 lines, rank C = 67; rank [A_I; w_c C] = 112 of 169; dim ker = 57 (exact)
 [Sec.5] R4.0 design (y_base=1e-7, 4 fam): chord gate 74 lines, p_chord <= Q(6.455) <= 5.42e-11, FWER <= 4.01e-9 (line-length-aware <= 2.48e-10); max|dLambda| = 1.6549e-10 S, w_c = 6.62e-08; ||dL - A s y_r||/||dL|| = 1115.4
 [Sec.5] R4.0 design (y_base=1e-7, 4 fam): K = 16, rank C_K = 16, rank [A_K; w_c C_K] = 16 (exact), sigma(A_K) ratio 1.3e-03; 1 binary pattern(s) share the chord data; the chord data determine the ridge
-[Sec.5] R4.0 design (y_base=1e-7, 4 fam): MC 2000 @ 34.0 dB: K in [16, 16]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 0.0015); maximum likelihood 2000/2000 (0.011 ms/trial select)
+[Sec.5] R4.0 design (y_base=1e-7, 4 fam): MC 2000 @ 34.0 dB: K in [16, 16]; ridge-LS (lambda=1e-10) 0/2000 (max |s_hat| <= 0.0015); maximum likelihood 2000/2000 (0.006 ms/trial select)
 [Sec.5] Thm5.2(5) y_base=1e-6, 4 fam: 4+4-cell switching component [(0, 0), (1, 2), (2, -1), (3, 1)] vs [(0, 1), (1, -1), (2, 2), (3, 0)]; isolated (all cells >= 2 rings deep): 70 placements, min separation >= 44.62 std at shift (0, -3)
 [Sec.5] Thm5.2(5) y_base=1e-6, 4 fam: inside a closed 36-cell ridge loop: 44 placements, separation 2.1e-09 to <= 0.0019 std -> any decoder errs w.p. >= 0.4996 on one of each pair
 [Sec.5] Thm5.2(5) R4.0 design (y_base=1e-7, 4 fam): 4+4-cell switching component [(0, 0), (1, 2), (2, -1), (3, 1)] vs [(0, 1), (1, -1), (2, 2), (3, 0)]; isolated (all cells >= 2 rings deep): 70 placements, min separation >= 30.09 std at shift (-3, 0)
@@ -2173,7 +2240,7 @@ if __name__ == "__main__":
 [Sec.5.4] gate variants: K = 16 for the four-family gate; 45 family-subset/threshold variants give K in [0, 3, 6, 7, 8, 9, 10, 12, 13, 15, 16, 17, 18, 19, 21, 24, 25, 30, 42, 43, 49, 59, 68, 69, 81, 93]; K = 14 occurs: False
 [Sec.5.4] Lemma 5.5 design 1e-7 S: Z-matrix, strictly diag. dominant, connected, G[:, active] > 0 at 12 states; min dLambda_bb/ds_c over 69 active nodes: s=0 1.633e-16, s* 1.908e-21, all states 5.624e-34 S; exactly 0 on 75 inactive nodes
 [Sec.5.4] Lemma 5.5 baseline 1e-6 S: Z-matrix, strictly diag. dominant, connected, G[:, active] > 0 at 12 states; min dLambda_bb/ds_c over 69 active nodes: s=0 6.280e-33, s* 3.919e-34, all states 6.631e-35 S; exactly 0 on 75 inactive nodes
-[Sec.5.4] Lemma 5.5 formula w_b^T M_c w_b vs complex-step derivative (24 columns, 2 states): max rel. error <= 3.0e-10
+[Sec.5.4] Lemma 5.5 formula w_b^T M_c w_b vs complex-step derivative (24 columns, 2 states): max rel. error <= 1.7e-10
 [Sec.5.4] Rev.5.0 value 1.054e-13: not reproduced by 28 conventions; closest design s=0 min all / y_ridge = 6.5313e-14 (38% off)
 [Sec.5.4] Lemma 5.5(2) (10 random s <= s'): integrand > 0 along every segment; 381 resolvable increases, all positive
 [Sec.5.4] Thm 5.6 4 fam: K = 16, rank C_K = 16, rank J(s*)_K = 16, rank [J(s*)_K; w_c C_K] = 16 (exact); sigma_min/sigma_max = 7.21e-03
@@ -2184,7 +2251,7 @@ if __name__ == "__main__":
 [Sec.5.4] Thm 5.7 loop radius 6 (36 cells): 44 placements; median separation 2.34e-13 S = 2.99e-04 std (max 6.27e-04 std); loop factor 1.3e-04
 [Sec.5.4] Thm 5.7 radius-6 loop, by depth of the pair inside the wall: 1 cell(s): 20 placements, median 3.70e-04 std; 2 cell(s): 14 placements, median 2.99e-04 std; 3 cell(s): 8 placements, median 7.66e-08 std; 4 cell(s): 2 placements, median 1.44e-08 std
 [Sec.5.4] Thm 5.7 radius-6 loop, largest separation: 6.273e-04 std (4.91e-13 S) at shift (-1, -4), depth 1; P_err <= 1% needs d >= 4.6527 std, i.e. SNR >= 111.3 dB (now 33.98 dB)
-[Sec.5.4] Thm 5.7 radius-6 loop, smallest separation: 1.444e-08 std (1.13e-17 S) at shift (-1, -1), depth 4; P_err <= 1% needs d >= 4.6527 std, i.e. SNR >= 204.1 dB (now 33.98 dB)
+[Sec.5.4] Thm 5.7 radius-6 loop, smallest separation: 1.445e-08 std (1.13e-17 S) at shift (-1, -1), depth 4; P_err <= 1% needs d >= 4.6527 std, i.e. SNR >= 204.1 dB (now 33.98 dB)
 [Sec.5.4] Thm 5.7 loop radius 5 (30 cells): 24 placements; median separation 2.83e-14 S = 2.83e-04 std (max 5.10e-04 std); loop factor 1.1e-04
 [Sec.5.4] Thm 5.7 loop radius 4 (24 cells): 10 placements; median separation 6.58e-15 S = 3.64e-04 std (max 5.17e-04 std); loop factor 1.0e-04
 [Sec.5.4] Thm 5.7 loop radius 3 (18 cells): 2 placements; median separation 2.29e-15 S = 6.26e-04 std (max 6.26e-04 std); loop factor 1.0e-04
@@ -2220,25 +2287,26 @@ if __name__ == "__main__":
 [Sec.5.5] Thm 5.13 k=3: 16 isolated pairs separated by 99.9 .. 147 std; inside the closed radius-7 ring (42 cells) 4 pairs at 1.45 .. 1.78 std (2.5e-5 .. 3.2e-5 S) -> every decoder errs w.p. >= 0.1868 on one ridge of each pair
 [Sec.5.5] Thm 5.14 rank [A_I; C^(3)] / N_I: R=2: 7/7, R=3: 19/19, R=4: 37/37, R=5: 61/61, R=6: 91/91, R=7: 127/127, R=8: 169/169, R=9: 217/217, R=10: 268..270/271, R=11: 306/331  (full for R <= 9, deficient for R = 10, 11)
 [Sec.5.5] Thm 5.14: d(R) = 6R - 3 distinct L_IB columns for 2 <= R <= 15, and T_3(R) - d(R) = 3R^2 - 39R + 91 > 0 for 10 <= R <= 15; T_3(R) - 18R = 3R^2 - 51R + 88 > 0 for R >= 16 (18R boundary nodes)
-[Sec.5.5] Thm 5.14 R=10: rank [A_I; C^(3)] = rank C^(3) (213) + rank(A_I K) with K the 58 kernel translates; rank(A_I K) mod four primes = [55, 55, 55, 55]; float64 singular values of A_I K 1.22e-01 .. 1.85e-11, then 1.6e-16, 2.3e-19, 2.0e-19 -> rank [A_I; C^(3)] in [268, 270] of 271
-[Sec.5.5] Rem 5.15 y_base=1e-07: [A_I; C^(2)] sigma_1 = 4.668e+00, sigma_163 = 8.373e-10, sigma_164 = 8.859e-16; [A_I; C^(3)] sigma_max = 3.797e+00, sigma_min = 8.794e-05, kappa = 43172 (column-equilibrated 43171, row-equilibrated 2150); A_I on ker C^(3): singular values 3.99e-02 .. 8.80e-05
-[Sec.5.5] Rem 5.15 y_base=1e-07: kappa of [A_I; C^(3)] on the full-rank three-family subsets: mnq 9.17e+05, mpq 2.78e+07, npq 2.78e+07
-[Sec.5.5] Rem 5.15 y_base=1e-06: [A_I; C^(2)] sigma_1 = 4.668e+00, sigma_163 = 1.202e-15, sigma_164 = 9.163e-16; [A_I; C^(3)] sigma_max = 3.797e+00, sigma_min = 7.241e-08, kappa = 52431411 (column-equilibrated 52431388, row-equilibrated 291401); A_I on ker C^(3): singular values 4.91e-03 .. 7.24e-08
-[Sec.5.5] Rem 5.15 y_base=1e-06: kappa of [A_I; C^(3)] on the full-rank three-family subsets: mnq 5.78e+09, mpq 1.18e+12, npq 1.18e+12
-[Sec.5.5] Rem 5.16 strokes, standard chords (74 rows): unique chord data 100/100, ML exact 20000/20000
-[Sec.5.5] Rem 5.16 strokes, mod-3 chords (216 rows): unique chord data 100/100, ML exact 20000/20000
-[Sec.5.5] Rem 5.16 connected loop-free 12, standard chords (74 rows): unique chord data 97/100, ML exact 19928/20000; non-unique: 4 patterns, ML 200/200, separations [100.66, 108.2, 110.6] std; 2 patterns, ML 128/200, separations [0.78] std; 2 patterns, ML 200/200, separations [5.18] std
-[Sec.5.5] Rem 5.16 connected loop-free 12, mod-3 chords (216 rows): unique chord data 100/100, ML exact 20000/20000
-[Sec.5.6] Prop 5.17: cross ratio of the four chord slopes = 2; 48853 convex lattice sets generated by <= 4 of the 37 cells within radius 3: three families: 344 chord-data classes with distinct convex sets, smallest 4 cells; four families: 15 classes, smallest 8 cells
-[Sec.5.6] Prop 5.17: the two lattice parallelograms S+ u I and S- u I (I = 4 interior points) are convex, have identical chord data in all four families and differ by the switching component; 102 placements in the interior; isolated (70 placements, radius <= 6): separation 30.08 .. 89.84 std; inside the closed radius-6 ring (44 placements): 1.44e-8 .. 6.14e-4 std -> every decoder errs w.p. >= 0.4998 on one ridge of each pair
-[done] 213 s
+[Sec.5.5] Thm 5.14 R=10: rank [A_I; C^(3)] = rank C^(3) (213) + rank(A_I K) with K the 58 kernel translates; rank(A_I K) mod four primes = [55, 55, 55, 55]; float64 singular values of A_I K 1.22e-01 .. 1.85e-11, then 1.9e-16, 1.8e-19, 1.1e-19 -> rank [A_I; C^(3)] in [268, 270] of 271
+[Sec.5.5] Cor 5.15: R_crit(k) verified for k=1..5 (1:6, 2:8, 3:10, 4:13, 5:15); R_crit(10000) - 20000 = 7 (asymptote 7)
+[Sec.5.5] Rem 5.16 y_base=1e-07: [A_I; C^(2)] sigma_1 = 4.668e+00, sigma_163 = 8.373e-10, sigma_164 = 9.192e-16; [A_I; C^(3)] sigma_max = 3.797e+00, sigma_min = 8.794e-05, kappa = 43172 (column-equilibrated 43171, row-equilibrated 2150); A_I on ker C^(3): singular values 3.99e-02 .. 8.80e-05
+[Sec.5.5] Rem 5.16 y_base=1e-07: kappa of [A_I; C^(3)] on the full-rank three-family subsets: mnq 9.17e+05, mpq 2.78e+07, npq 2.78e+07
+[Sec.5.5] Rem 5.16 y_base=1e-06: [A_I; C^(2)] sigma_1 = 4.668e+00, sigma_163 = 9.776e-16, sigma_164 = 9.157e-16; [A_I; C^(3)] sigma_max = 3.797e+00, sigma_min = 7.241e-08, kappa = 52431411 (column-equilibrated 52431388, row-equilibrated 291401); A_I on ker C^(3): singular values 4.91e-03 .. 7.24e-08
+[Sec.5.5] Rem 5.16 y_base=1e-06: kappa of [A_I; C^(3)] on the full-rank three-family subsets: mnq 5.78e+09, mpq 1.18e+12, npq 1.18e+12
+[Sec.5.5] Rem 5.17 strokes, standard chords (74 rows): unique chord data 100/100, ML exact 20000/20000
+[Sec.5.5] Rem 5.17 strokes, mod-3 chords (216 rows): unique chord data 100/100, ML exact 20000/20000
+[Sec.5.5] Rem 5.17 connected loop-free 12, standard chords (74 rows): unique chord data 97/100, ML exact 19928/20000; non-unique: 4 patterns, ML 200/200, separations [100.66, 108.2, 110.6] std; 2 patterns, ML 128/200, separations [0.78] std; 2 patterns, ML 200/200, separations [5.18] std
+[Sec.5.5] Rem 5.17 connected loop-free 12, mod-3 chords (216 rows): unique chord data 100/100, ML exact 20000/20000
+[Sec.5.6] Prop 5.18: cross ratio of the four chord slopes = 2; 48853 convex lattice sets generated by <= 4 of the 37 cells within radius 3: three families: 344 chord-data classes with distinct convex sets, smallest 4 cells; four families: 15 classes, smallest 8 cells
+[Sec.5.6] Prop 5.18: the two lattice parallelograms S+ u I and S- u I (I = 4 interior points) are convex, have identical chord data in all four families and differ by the switching component; 102 placements in the interior; isolated (70 placements, radius <= 6): separation 30.08 .. 89.84 std; inside the closed radius-6 ring (44 placements): 1.44e-8 .. 6.14e-4 std -> every decoder errs w.p. >= 0.4998 on one ridge of each pair
+[done] 199 s
 \end{lstlisting}
 
 \subsection{Supplementary exact-arithmetic checks}\label{app:supp}
 Requires \texttt{numpy} and \texttt{python-flint}, and imports the listing above; runtime $\approx$40 s. Parts (a), (b) and (d) evaluate the boundary signatures directly as differences of Schur complements in 256-bit ball arithmetic and print rigorous enclosures: (a) the test ridge and its two ghosts at the baseline (Theorem~\ref{thm:ghost}(3)), and (b), (d) the most and least separated enclosed pairs of Theorem~\ref{thm:screen}(2). Part (c) computes the three-family augmented rank at $R_{\text{hex}} = 4$ exactly over $\mathbb{Q}$ (Proposition~\ref{prop:family}).
 
 \begin{lstlisting}[language=Python,style=cleanstyle,caption={Supplementary exact-arithmetic checks.}]
-"""Supplementary exact-arithmetic checks for Revision 5.4 (independent of numpy linear algebra).
+"""Supplementary exact-arithmetic checks for Revision 5.5 (independent of numpy linear algebra).
 
 (a) Theorem 5.2(3), Revision-3.9 baseline (y_base = 1e-6, three chord families): boundary signatures
     diag(Lambda(s) - Lambda(0)) of the test ridge and its two chord-consistent ghosts.
@@ -2249,14 +2317,14 @@ Requires \texttt{numpy} and \texttt{python-flint}, and imports the listing above
 (a), (b) and (d) use 256-bit ball arithmetic (python-flint) directly on differences of Schur complements and
 report rigorous enclosures; (c) uses exact rational matrices.
 
-Usage (same folder as biokagome_v54_verify.py):  pip install python-flint numpy
+Usage (same folder as biokagome_v55_verify.py):  pip install python-flint numpy
                                                   python supplementary_exact_checks.py
 Runtime about 40 s.
 """
 import itertools, math
 import numpy as np
 from flint import arb, arb_mat, ctx
-from biokagome_v54_verify import Spec, BASELINE, Network, RIDGES, Q, switching_component, exact_laplacian, replace
+from biokagome_v55_verify import Spec, BASELINE, Network, RIDGES, Q, switching_component, exact_laplacian, replace
 import flint
 
 ctx.prec = 256
