@@ -56,9 +56,11 @@ Supplementary ball-arithmetic checks (need python-flint):
     npm install
     npm run dev
 
-Opens the interactive Kagome lattice viewer, audit table, and band-structure
-chart. Audit data lives in src/data/audit_items_v54.ts and
-src/utils/tomography_v54.ts.
+Five tabs: Identifiability, Asymptotic Limit and Revision History (Section 5
+and the paper's revision notes), Bloch Spectrum (Section 3.2) and Piezo
+Wake-Up (Section 3.1). Every value shown is quoted from the paper or computed
+with its formulas. Rank and asymptotic data live in src/utils/tomography_v54.ts,
+the revision history in src/data/audit_items_v54.ts.
 
 ## License
 
