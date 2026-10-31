@@ -230,6 +230,8 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
               truthCellIds={latticeData.truthCellIds}
               ghost1CellIds={latticeData.ghost1CellIds}
               ghost2CellIds={latticeData.ghost2CellIds}
+              snrDb={params.snrDb}
+              barrierG2={params.barrierG2}
             />
 
             <DepthSensitivityChart
