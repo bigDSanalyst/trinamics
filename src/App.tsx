@@ -66,12 +66,12 @@ export default function App() {
 
   const exportCertificate = () => {
     const content = `========================================================================
-HIERARCHICAL BIO-KAGOME METAMATERIALS & BOUNDARY LAB — REVISION 5.4
+HIERARCHICAL BIO-KAGOME METAMATERIALS & BOUNDARY LAB — REVISION 5.5
 Passive Tomography & Materials Transduction Verification Suite
 Nicholas Clifford Maino III · Melbourne · 31 October 2026
 ========================================================================
 
-1. REVISION 5.4 VERIFICATION SUMMARY
+1. REVISION 5.5 VERIFICATION SUMMARY
 ------------------------------------------------------------------------
 [EXACT RANK PROGRESSION at R_hex = 8, N_I = 169]
   - Stage 1 (A_I boundary only): rank 45, kernel 124 (out of 169)
@@ -84,7 +84,11 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
   - No fixed split order works for all R_hex.
   - For k=3: full rank for R <= 9; provably deficient for R >= 10.
   - Growth disparity: T_k(R) = Θ(R²) while boundary data d(R) = Θ(R).
-  - R_crit(k) = ceil((10k + 9 + sqrt(4k² + 120k + 33)) / 6).
+
+[CRITICAL RADIUS (Corollary 5.15, new in Revision 5.5)]
+  - If d(R) = 6R - 3: deficient for R >= R_crit(k) = floor((10k + 9 + sqrt(4k² + 120k + 33)) / 6) + 1.
+  - R_crit = 6, 8, 10, 13, 15 for k = 1..5; R_crit(k) = 2k + 7 exactly when k >= 58.
+  - Using only d(R) <= 18R: deficient for R >= floor((10k + 21 + sqrt(4k² + 360k + 429)) / 6) + 1 (R >= 16 for k = 3).
 
 [SCREENING & GHOST SEPARATION]
   - Closed 36-cell loop screens switching components to <= 6.27e-4 σ (P_err >= 0.4998).
@@ -104,7 +108,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `BioKagome_v54_Verification_Certificate.txt`;
+    link.download = `BioKagome_v55_Verification_Certificate.txt`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -119,7 +123,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
           <div>
             <div className="flex items-center gap-2.5">
               <span className="font-mono text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold tracking-wide">
-                PAPER REVISION 5.4
+                PAPER REVISION 5.5
               </span>
               <h1 className="text-lg font-bold text-zinc-100 tracking-tight">
                 Kagome Boundary Lab
@@ -137,7 +141,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
                 Nicholas Clifford Maino III
               </div>
               <div className="text-[11px] text-zinc-500 font-mono">
-                Melbourne · Revision 5.4 · 31 October 2026
+                Melbourne · Revision 5.5 · 31 October 2026
               </div>
             </div>
 
@@ -154,7 +158,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
               <button
                 onClick={exportCertificate}
                 className="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-cyan-950/60 border border-cyan-800/60 text-cyan-300 hover:bg-cyan-900/60 transition-colors flex items-center gap-1.5"
-                title="Export v5.4 verification audit certificate"
+                title="Export v5.5 verification audit certificate"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span className="hidden md:inline">Export Audit</span>
@@ -175,7 +179,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-            v5.4 Identifiability
+            v5.5 Identifiability
           </button>
 
           <button
@@ -187,7 +191,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
             }`}
           >
             <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
-            v5.4 Asymptotic Limit
+            v5.5 Asymptotic Limit
           </button>
 
           <button
@@ -199,7 +203,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
             }`}
           >
             <Scale className="w-3.5 h-3.5 text-cyan-400" />
-            v5.4 vs v4.0
+            v5.5 vs v4.0
           </button>
 
           <div className="h-4 w-px bg-zinc-800 mx-1.5 shrink-0" />
@@ -445,7 +449,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
               </div>
 
               <div className="p-3 bg-zinc-950 rounded-lg border border-zinc-800 text-[11px] text-zinc-400">
-                The bench preserves the <strong className="text-zinc-200">v4.0 historical baseline</strong> while linking to the multi-tier resolution in Revision 5.4.
+                The bench preserves the <strong className="text-zinc-200">v4.0 historical baseline</strong> while linking to the multi-tier resolution in Revision 5.5.
               </div>
             </div>
           </div>
@@ -456,7 +460,7 @@ Nicholas Clifford Maino III · Melbourne · 31 October 2026
       <footer className="border-t border-zinc-800/60 py-4 bg-zinc-950/60 text-xs text-zinc-500 font-mono">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2">
           <div>
-            Bio-Kagome Metamaterials & Boundary Lab · Revision 5.4 (supersedes v4.0 and v5.0–5.3)
+            Bio-Kagome Metamaterials & Boundary Lab · Revision 5.5 (supersedes v4.0 and v5.0–5.4)
           </div>
           <div>
             Nicholas Clifford Maino III · Melbourne · 31 October 2026

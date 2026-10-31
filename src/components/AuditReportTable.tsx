@@ -20,7 +20,7 @@ export const AuditReportTable: React.FC<AuditReportTableProps> = ({
           <h2 className="text-base font-semibold text-zinc-100">v4.0 Baseline Audit & Locking Record</h2>
         </div>
         <p className="text-xs text-zinc-400 mt-1">
-          Historical item-by-item verification comparing printed v4.0 logs against the executable baseline (superseded by Revision 5.4)
+          Historical item-by-item verification comparing printed v4.0 logs against the executable baseline (superseded by Revision 5.5)
         </p>
       </div>
 

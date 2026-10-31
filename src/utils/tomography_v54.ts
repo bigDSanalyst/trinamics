@@ -1,6 +1,6 @@
 /**
- * Bio-Kagome v5.4 Rigorous Discrete Tomography & Identifiability Models
- * Anchored in Revision 5.4 of the manuscript and verified via biokagome_v54_verify.py
+ * Bio-Kagome Rigorous Discrete Tomography & Identifiability Models
+ * Anchored in Revision 5.5 of the manuscript and verified via biokagome_v55_verify.py
  */
 
 export interface RankProgressionStage {
@@ -22,6 +22,9 @@ export interface AsymptoticCurvePoint {
   status: 'full' | 'threshold' | 'deficient';
   tCount: number;
   distinctBoundaryD: number;
+  // 'exact': computed rank; 'range': rankMod3..maxPossibleRank (R=10);
+  // 'upper_bound': not computed, rankMod3 = N_I - T_3(R) + d(R) from Theorem 5.14
+  rankKind: 'exact' | 'range' | 'upper_bound';
 }
 
 export const TOMOGRAPHY_V54 = {
@@ -59,7 +62,7 @@ export const TOMOGRAPHY_V54 = {
       rank: 163,
       kernel: 6,
       total: 169,
-      probeDescription: 'Parity split per line (148 rows, rank 118). Resolves 4th-order hexadecapole',
+      probeDescription: 'Parity split per line (146 rows, rank 118). Resolves 4th-order hexadecapole',
       fraction: 163 / 169,
       color: '#8b5cf6', // Violet
     },
@@ -68,36 +71,43 @@ export const TOMOGRAPHY_V54 = {
       rank: 169,
       kernel: 0,
       total: 169,
-      probeDescription: 'Period-3 split per line (222 rows, rank 153). Full rank at R_hex = 8',
+      probeDescription: 'Period-3 split per line (216 rows, rank 153). Full rank at R_hex = 8',
       fraction: 169 / 169,
       color: '#10b981', // Emerald
     },
   ] as RankProgressionStage[],
 
-  // Asymptotic data across R_hex = 2..15 (Theorem 5.14)
+  // Asymptotic data across R_hex = 2..15 (Theorem 5.14).
+  // Ranks are computed for R <= 11 only; R = 12..15 show the Theorem 5.14 upper bound.
   asymptotic_k3: [
-    { R: 2, nInterior: 7, rankMod3: 7, maxPossibleRank: 7, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 9 },
-    { R: 3, nInterior: 19, rankMod3: 19, maxPossibleRank: 19, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 15 },
-    { R: 4, nInterior: 37, rankMod3: 37, maxPossibleRank: 37, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 21 },
-    { R: 5, nInterior: 61, rankMod3: 61, maxPossibleRank: 61, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 27 },
-    { R: 6, nInterior: 91, rankMod3: 91, maxPossibleRank: 91, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 33 },
-    { R: 7, nInterior: 127, rankMod3: 127, maxPossibleRank: 127, deficient: false, status: 'full', tCount: 4, distinctBoundaryD: 39 },
-    { R: 8, nInterior: 169, rankMod3: 169, maxPossibleRank: 169, deficient: false, status: 'full', tCount: 16, distinctBoundaryD: 45 },
-    { R: 9, nInterior: 217, rankMod3: 217, maxPossibleRank: 217, deficient: false, status: 'full', tCount: 34, distinctBoundaryD: 51 },
-    { R: 10, nInterior: 271, rankMod3: 269, maxPossibleRank: 270, deficient: true, status: 'threshold', tCount: 58, distinctBoundaryD: 57 },
-    { R: 11, nInterior: 331, rankMod3: 306, maxPossibleRank: 306, deficient: true, status: 'deficient', tCount: 88, distinctBoundaryD: 63 },
-    { R: 12, nInterior: 397, rankMod3: 345, maxPossibleRank: 345, deficient: true, status: 'deficient', tCount: 124, distinctBoundaryD: 69 },
-    { R: 13, nInterior: 469, rankMod3: 387, maxPossibleRank: 387, deficient: true, status: 'deficient', tCount: 166, distinctBoundaryD: 75 },
-    { R: 14, nInterior: 547, rankMod3: 432, maxPossibleRank: 432, deficient: true, status: 'deficient', tCount: 214, distinctBoundaryD: 81 },
-    { R: 15, nInterior: 631, rankMod3: 480, maxPossibleRank: 480, deficient: true, status: 'deficient', tCount: 268, distinctBoundaryD: 87 },
+    { R: 2, nInterior: 7, rankMod3: 7, maxPossibleRank: 7, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 9, rankKind: 'exact' },
+    { R: 3, nInterior: 19, rankMod3: 19, maxPossibleRank: 19, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 15, rankKind: 'exact' },
+    { R: 4, nInterior: 37, rankMod3: 37, maxPossibleRank: 37, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 21, rankKind: 'exact' },
+    { R: 5, nInterior: 61, rankMod3: 61, maxPossibleRank: 61, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 27, rankKind: 'exact' },
+    { R: 6, nInterior: 91, rankMod3: 91, maxPossibleRank: 91, deficient: false, status: 'full', tCount: 0, distinctBoundaryD: 33, rankKind: 'exact' },
+    { R: 7, nInterior: 127, rankMod3: 127, maxPossibleRank: 127, deficient: false, status: 'full', tCount: 4, distinctBoundaryD: 39, rankKind: 'exact' },
+    { R: 8, nInterior: 169, rankMod3: 169, maxPossibleRank: 169, deficient: false, status: 'full', tCount: 16, distinctBoundaryD: 45, rankKind: 'exact' },
+    { R: 9, nInterior: 217, rankMod3: 217, maxPossibleRank: 217, deficient: false, status: 'full', tCount: 34, distinctBoundaryD: 51, rankKind: 'exact' },
+    { R: 10, nInterior: 271, rankMod3: 268, maxPossibleRank: 270, deficient: true, status: 'threshold', tCount: 58, distinctBoundaryD: 57, rankKind: 'range' },
+    { R: 11, nInterior: 331, rankMod3: 306, maxPossibleRank: 306, deficient: true, status: 'deficient', tCount: 88, distinctBoundaryD: 63, rankKind: 'exact' },
+    { R: 12, nInterior: 397, rankMod3: 342, maxPossibleRank: 342, deficient: true, status: 'deficient', tCount: 124, distinctBoundaryD: 69, rankKind: 'upper_bound' },
+    { R: 13, nInterior: 469, rankMod3: 378, maxPossibleRank: 378, deficient: true, status: 'deficient', tCount: 166, distinctBoundaryD: 75, rankKind: 'upper_bound' },
+    { R: 14, nInterior: 547, rankMod3: 414, maxPossibleRank: 414, deficient: true, status: 'deficient', tCount: 214, distinctBoundaryD: 81, rankKind: 'upper_bound' },
+    { R: 15, nInterior: 631, rankMod3: 450, maxPossibleRank: 450, deficient: true, status: 'deficient', tCount: 268, distinctBoundaryD: 87, rankKind: 'upper_bound' },
   ] as AsymptoticCurvePoint[],
 
-  // Critical radius formula values: R_crit(k) = ceil((10k + 9 + sqrt(4k^2 + 120k + 33)) / 6)
+  // Corollary 5.15: R_crit(k) = floor((10k + 9 + sqrt(4k^2 + 120k + 33)) / 6) + 1  (when d(R) = 6R - 3)
   r_crit_values: [
-    { k: 1, rCrit: 6, note: 'Standard line sums (k=1) fail at R >= 6' },
-    { k: 2, rCrit: 8, note: 'Parity splits (k=2) fail at R >= 8 (rank 163 of 169)' },
-    { k: 3, rCrit: 10, note: 'Mod-3 splits (k=3) succeed at R=8,9; fails at R >= 10' },
-    { k: 4, rCrit: 13, note: 'R_crit = 13 (not 12; 2k+4 shortcut is invalid at k >= 4)' },
+    { k: 1, rCrit: 6, note: 'Standard line sums: deficient for R >= 6; full rank at R <= 5 (observed onset)' },
+    { k: 2, rCrit: 8, note: 'Parity split: deficient for R >= 8 (rank 163 of 169 at R = 8)' },
+    { k: 3, rCrit: 10, note: 'Mod-3 split: full rank at R <= 9, deficient for R >= 10 (observed onset)' },
+    { k: 4, rCrit: 13, note: 'Deficient for R >= 13 (bound; not 12 as 2k+4 would give)' },
+    { k: 5, rCrit: 15, note: 'Deficient for R >= 15 (bound)' },
+  ],
+  // R_crit(k) = 2k + 7 exactly when k >= 58; without assuming d(R) = 6R - 3 (d(R) <= 18R):
+  r_crit_asymptote: { constant: 7, fromK: 58 },
+  r_unconditional_values: [
+    { k: 1, rUnc: 10 }, { k: 2, rUnc: 13 }, { k: 3, rUnc: 16 }, { k: 4, rUnc: 18 }, { k: 5, rUnc: 20 },
   ],
 
   // Ghost Separation data
@@ -120,7 +130,7 @@ export const TOMOGRAPHY_V54 = {
     min_decoder_error: 0.4998,
   },
 
-  // Gardner-Gritzmann cross ratio 2 witness (Prop 5.17)
+  // Gardner-Gritzmann cross ratio 2 witness (Prop 5.18)
   cross_ratio_witness: {
     slopes: [-1.0, 0.0, 1.0],
     cross_ratio: 2.0,

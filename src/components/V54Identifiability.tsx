@@ -13,7 +13,7 @@ export const V54Identifiability: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-mono border border-emerald-800 font-semibold uppercase tracking-wider">
-                v5.4 Multi-Tier Resolution
+                v5.5 Multi-Tier Resolution
               </span>
               <span className="text-xs text-zinc-400 font-mono">Kagome Flake R_hex = 8 · N_I = 169</span>
             </div>
@@ -128,7 +128,7 @@ export const V54Identifiability: React.FC = () => {
               Rank 163 → 169 <span className="text-xs text-emerald-400 font-normal">(kernel 6 → 0)</span>
             </div>
             <p className="text-xs text-zinc-300 mt-2 leading-relaxed">
-              Closes the residual 6-dimensional stealth subspace. <strong className="text-zinc-100">The kernels are not nested:</strong> ker(C^(2)) and ker(C^(3)) are orthogonal. Each translate of the 3-dilated component has 24 non-zero parity sums, and vice versa.
+              Closes the residual 6-dimensional stealth subspace. <strong className="text-zinc-100">The kernels are not nested:</strong> neither of ker(C^(2)) and ker(C^(3)) contains the other. Each translate of the 3-dilated component has 24 non-zero parity sums, and vice versa.
             </p>
           </div>
           <div className="p-2.5 bg-zinc-950 rounded border border-zinc-800 text-[11px] font-mono text-zinc-400">
@@ -174,7 +174,7 @@ export const V54Identifiability: React.FC = () => {
           <li className="flex items-start gap-2">
             <span className="text-rose-400 font-bold shrink-0">✕</span>
             <span>
-              <span className="line-through text-zinc-500">“Split chord kernels are nested: ker C^(3) ⊂ ker C^(2)”</span> → <strong className="text-zinc-200">Corrected to orthogonal</strong>. Each translate of z_3 has 24 non-zero parity sums; each translate of z_2 has 24 non-zero mod-3 sums.
+              <span className="line-through text-zinc-500">“Split chord kernels are nested: ker C^(3) ⊂ ker C^(2)”</span> → <strong className="text-zinc-200">Corrected to not nested</strong>. Each translate of z_3 has 24 non-zero parity sums; each translate of z_2 has 24 non-zero mod-3 sums.
             </span>
           </li>
           <li className="flex items-start gap-2">
